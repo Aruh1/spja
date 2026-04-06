@@ -11,6 +11,7 @@ package com.pololer.spjaprak;
 public class Spjaprak {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        // Meluncurkan GUI Anime Manager
+        javax.swing.SwingUtilities.invokeLater(() -> new GUI_AnimeManager());
     }
 }
