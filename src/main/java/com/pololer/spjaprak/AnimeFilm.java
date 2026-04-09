@@ -1,4 +1,7 @@
-// === AnimeFilm.java ===
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.pololer.spjaprak;
 
 import java.time.LocalDate;
@@ -7,17 +10,23 @@ import java.time.format.DateTimeParseException;
 
 /**
  * Class AnimeFilm merupakan child class (subclass) dari {@link Media} yang
- * merepresentasikan sebuah film anime (movie) dalam Sistem Penjadwalan Tayang Anime (SPJA).
+ * merepresentasikan sebuah film anime (movie) dalam Sistem Penjadwalan Tayang
+ * Anime (SPJA).
  *
- * <p>Class ini mewarisi semua atribut dan method dari {@link Media}, serta
+ * <p>
+ * Class ini mewarisi semua atribut dan method dari {@link Media}, serta
  * menambahkan atribut dan method khusus untuk film anime seperti durasi,
- * tanggal rilis, dan distributor.</p>
+ * tanggal rilis, dan distributor.
+ * </p>
  *
- * <p>Konsep OOP yang diterapkan:</p>
+ * <p>
+ * Konsep OOP yang diterapkan:
+ * </p>
  * <ul>
- *   <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
- *   <li><b>Overriding</b> — override method {@code getInfo()} dan {@code tampilkanDetail()}</li>
- *   <li><b>super()</b> — memanggil constructor parent di constructor child</li>
+ * <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
+ * <li><b>Overriding</b> — override method {@code getInfo()} dan
+ * {@code tampilkanDetail()}</li>
+ * <li><b>super()</b> — memanggil constructor parent di constructor child</li>
  * </ul>
  *
  * @author Administrator
@@ -40,18 +49,19 @@ public class AnimeFilm extends Media {
 
     /**
      * Constructor untuk membuat objek AnimeFilm baru.
-     * Menggunakan {@code super()} untuk memanggil constructor parent class {@link Media}.
+     * Menggunakan {@code super()} untuk memanggil constructor parent class
+     * {@link Media}.
      *
-     * @param judul        judul film anime
-     * @param genre        genre film
-     * @param tahunRilis   tahun rilis film
-     * @param status       status tayang ("Ongoing", "Completed", "Upcoming")
-     * @param durasiMenit  durasi film dalam menit
+     * @param judul judul film anime
+     * @param genre genre film
+     * @param tahunRilis tahun rilis film
+     * @param status status tayang ("Ongoing", "Completed", "Upcoming")
+     * @param durasiMenit durasi film dalam menit
      * @param tanggalRilis tanggal rilis dalam format "DD-MM-YYYY"
-     * @param distributor  nama distributor film
+     * @param distributor nama distributor film
      */
     public AnimeFilm(String judul, String genre, int tahunRilis, String status,
-                     int durasiMenit, String tanggalRilis, String distributor) {
+            int durasiMenit, String tanggalRilis, String distributor) {
         // Memanggil constructor parent class Media menggunakan super()
         super(judul, genre, tahunRilis, status);
         this.durasiMenit = durasiMenit;
@@ -75,8 +85,9 @@ public class AnimeFilm extends Media {
      * Mengecek apakah film sudah tayang berdasarkan tanggal rilis.
      * Membandingkan {@code tanggalRilis} dengan tanggal hari ini.
      *
-     * @return {@code true} jika film sudah tayang (tanggal rilis &le; hari ini),
-     *         {@code false} jika belum tayang atau format tanggal tidak valid
+     * @return {@code true} jika film sudah tayang (tanggal rilis &le; hari
+     *         ini), {@code false} jika belum tayang atau format tanggal tidak
+     *         valid
      */
     public boolean sudahTayang() {
         try {

@@ -1,13 +1,18 @@
-// === Media.java ===
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.pololer.spjaprak;
 
 /**
  * Class Media merupakan parent class (superclass) yang merepresentasikan
  * sebuah entitas media secara umum dalam Sistem Penjadwalan Tayang Anime (SPJA).
  *
- * <p>Class ini menyimpan informasi dasar seperti judul, genre, tahun rilis,
+ * <p>
+ * Class ini menyimpan informasi dasar seperti judul, genre, tahun rilis,
  * dan status tayang. Class ini dirancang untuk di-extend oleh class turunan
- * seperti {@link Anime} dan {@link AnimeFilm}.</p>
+ * seperti {@link Anime} dan {@link AnimeFilm}.
+ * </p>
  *
  * <h2>Class Diagram (Inheritance)</h2>
  * <pre>
@@ -48,10 +53,10 @@ public class Media {
     /**
      * Constructor untuk membuat objek Media baru.
      *
-     * @param judul      judul media
-     * @param genre      genre media
+     * @param judul judul media
+     * @param genre genre media
      * @param tahunRilis tahun rilis media
-     * @param status     status tayang media ("Ongoing", "Completed", "Upcoming")
+     * @param status status tayang media ("Ongoing", "Completed", "Upcoming")
      */
     public Media(String judul, String genre, int tahunRilis, String status) {
         this.judul = judul;

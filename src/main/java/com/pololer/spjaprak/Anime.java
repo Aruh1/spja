@@ -1,19 +1,28 @@
-// === Anime.java ===
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.pololer.spjaprak;
 
 /**
  * Class Anime merupakan child class (subclass) dari {@link Media} yang
- * merepresentasikan sebuah anime series dalam Sistem Penjadwalan Tayang Anime (SPJA).
+ * merepresentasikan sebuah anime series dalam Sistem Penjadwalan Tayang Anime
+ * (SPJA).
  *
- * <p>Class ini mewarisi semua atribut dan method dari {@link Media}, serta
+ * <p>
+ * Class ini mewarisi semua atribut dan method dari {@link Media}, serta
  * menambahkan atribut dan method khusus untuk anime series seperti studio,
- * jumlah episode, musim tayang, dan hari tayang.</p>
+ * jumlah episode, musim tayang, dan hari tayang.
+ * </p>
  *
- * <p>Konsep OOP yang diterapkan:</p>
+ * <p>
+ * Konsep OOP yang diterapkan:
+ * </p>
  * <ul>
- *   <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
- *   <li><b>Overriding</b> — override method {@code getInfo()} dan {@code tampilkanDetail()}</li>
- *   <li><b>super()</b> — memanggil constructor parent di constructor child</li>
+ * <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
+ * <li><b>Overriding</b> — override method {@code getInfo()} dan
+ * {@code tampilkanDetail()}</li>
+ * <li><b>super()</b> — memanggil constructor parent di constructor child</li>
  * </ul>
  *
  * @author Administrator
@@ -36,19 +45,20 @@ public class Anime extends Media {
 
     /**
      * Constructor untuk membuat objek Anime baru.
-     * Menggunakan {@code super()} untuk memanggil constructor parent class {@link Media}.
+     * Menggunakan {@code super()} untuk memanggil constructor parent class
+     * {@link Media}.
      *
-     * @param judul        judul anime
-     * @param genre        genre anime
-     * @param tahunRilis   tahun rilis anime
-     * @param status       status tayang ("Ongoing", "Completed", "Upcoming")
-     * @param studio       nama studio produksi
+     * @param judul judul anime
+     * @param genre genre anime
+     * @param tahunRilis tahun rilis anime
+     * @param status status tayang ("Ongoing", "Completed", "Upcoming")
+     * @param studio nama studio produksi
      * @param totalEpisode total jumlah episode
-     * @param musim        musim tayang (contoh: "Spring 2025")
-     * @param hariTayang   hari tayang (contoh: "Senin")
+     * @param musim musim tayang (contoh: "Spring 2025")
+     * @param hariTayang hari tayang (contoh: "Senin")
      */
     public Anime(String judul, String genre, int tahunRilis, String status,
-                 String studio, int totalEpisode, String musim, String hariTayang) {
+            String studio, int totalEpisode, String musim, String hariTayang) {
         // Memanggil constructor parent class Media menggunakan super()
         super(judul, genre, tahunRilis, status);
         this.studio = studio;
