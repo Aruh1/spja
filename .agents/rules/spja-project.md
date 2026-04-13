@@ -21,17 +21,21 @@ SPJA (Sistem Penjadwalan Tayang Anime) is a desktop Java Swing application for m
 Media (superclass, protected fields)
 ├── Anime (anime series — studio, totalEpisode, musim, hariTayang)
 └── AnimeFilm (anime films — durasiMenit, tanggalRilis, distributor)
+
+JadwalTayang (standalone, private fields + getter/setter — BAB 4 Enkapsulasi)
 ```.
 
 - `GUI_Anime` — Swing GUI for managing `Anime` objects
 - `GUI_AnimeFilm` — Swing GUI for managing `AnimeFilm` objects
-- `Spjaprak` — Main menu launcher (opens GUI_Anime or GUI_AnimeFilm)
+- `GUI_JadwalTayang` — Swing GUI for managing `JadwalTayang` objects (BAB 4)
+- `Spjaprak` — Main menu launcher (opens GUI_Anime, GUI_AnimeFilm, or GUI_JadwalTayang)
 - `Terminal` — Console-based testing class
 
 ## Coding Conventions
 - All **Javadoc and comments** must be written in **Indonesian (Bahasa Indonesia)**.
 - Retain the **NetBeans license header** at the top of each file (`nbfs://nbhost/...`).
 - Use `protected` access for superclass (`Media`) fields.
+- Use `private` access for encapsulation model fields (`JadwalTayang`).
 - Use `private final` for collection fields in GUI classes (e.g., `private final ArrayList<Anime> listAnime`).
 - Method names use **camelCase** in Indonesian (e.g., `tambahAnime()`, `hitungProgress()`, `tampilkanInfo()`).
 - Use `@author Administrator` and `@version 1.0` in Javadoc class-level tags.
@@ -39,11 +43,13 @@ Media (superclass, protected fields)
 ## Project Structure
 ```
 src/main/java/com/pololer/spjaprak/
-├── Media.java          (superclass)
-├── Anime.java          (extends Media)
-├── AnimeFilm.java      (extends Media)
-├── GUI_Anime.java      (Swing GUI for Anime)
-├── GUI_AnimeFilm.java  (Swing GUI for AnimeFilm)
-├── Spjaprak.java       (main entry point)
-└── Terminal.java        (console testing)
+├── Media.java            (superclass)
+├── Anime.java            (extends Media)
+├── AnimeFilm.java        (extends Media)
+├── JadwalTayang.java     (enkapsulasi model — BAB 4)
+├── GUI_Anime.java        (Swing GUI for Anime)
+├── GUI_AnimeFilm.java    (Swing GUI for AnimeFilm)
+├── GUI_JadwalTayang.java (Swing GUI for JadwalTayang)
+├── Spjaprak.java         (main entry point)
+└── Terminal.java          (console testing)
 ```

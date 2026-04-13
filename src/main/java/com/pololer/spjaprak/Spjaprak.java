@@ -41,7 +41,7 @@ public class Spjaprak {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("SPJA — Sistem Penjadwalan Tayang Anime");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(450, 280);
+            frame.setSize(450, 380);
             frame.setLocationRelativeTo(null);
             frame.setResizable(false);
 
@@ -63,7 +63,7 @@ public class Spjaprak {
             JButton btnAnime = new JButton("Kelola Anime Series");
             btnAnime.addActionListener(e -> new GUI_Anime());
             gbc.gridy = 2;
-            gbc.insets = new Insets(20, 10, 5, 10);
+            gbc.insets = new Insets(15, 10, 5, 10);
             panel.add(btnAnime, gbc);
 
             // Tombol 2: Kelola Anime Film
@@ -73,10 +73,18 @@ public class Spjaprak {
             gbc.insets = new Insets(5, 10, 5, 10);
             panel.add(btnFilm, gbc);
 
-            // Tombol 3: Keluar
+            // Tombol 3: Kelola Jadwal Tayang
+            JButton btnJadwal = new JButton("Kelola Jadwal Tayang");
+            btnJadwal.addActionListener(e -> new GUI_JadwalTayang());
+            gbc.gridy = 5;
+            gbc.insets = new Insets(5, 10, 5, 10);
+            panel.add(btnJadwal, gbc);
+
+            // Tombol 4: Keluar
             JButton btnExit = new JButton("Keluar");
             btnExit.addActionListener(e -> System.exit(0));
-            gbc.gridy = 4;
+            gbc.gridy = 6;
+            gbc.insets = new Insets(15, 10, 5, 10);
             panel.add(btnExit, gbc);
 
             frame.add(panel);
