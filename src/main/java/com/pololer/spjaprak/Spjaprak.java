@@ -59,13 +59,6 @@ public class Spjaprak {
             gbc.gridy = 0;
             panel.add(lblTitle, gbc);
 
-            // Subtitle
-            JLabel lblSub = new JLabel("BAB 3 — Inheritance (OOP)",
-                    SwingConstants.CENTER);
-            lblSub.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            gbc.gridy = 1;
-            panel.add(lblSub, gbc);
-
             // Tombol 1: Kelola Anime Series
             JButton btnAnime = new JButton("Kelola Anime Series");
             btnAnime.addActionListener(e -> new GUI_Anime());
