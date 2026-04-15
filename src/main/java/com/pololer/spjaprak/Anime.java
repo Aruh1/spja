@@ -87,8 +87,8 @@ public class Anime extends Media {
      * @return String berisi jadwal lengkap anime
      */
     public String getJadwalLengkap() {
-        return judul + " | Musim: " + musim + " | Hari: " + hariTayang
-                + " | Episode: " + totalEpisode + " | Status: " + status;
+        return getJudul() + " | Musim: " + musim + " | Hari: " + hariTayang
+                + " | Episode: " + totalEpisode + " | Status: " + getStatus();
     }
 
     /**
@@ -111,10 +111,10 @@ public class Anime extends Media {
     @Override
     public void tampilkanDetail() {
         System.out.println("======= Detail Anime Series =======");
-        System.out.println("Judul         : " + judul);
-        System.out.println("Genre         : " + genre);
-        System.out.println("Tahun Rilis   : " + tahunRilis);
-        System.out.println("Status        : " + status);
+        System.out.println("Judul         : " + getJudul());
+        System.out.println("Genre         : " + getGenre());
+        System.out.println("Tahun Rilis   : " + getTahunRilis());
+        System.out.println("Status        : " + getStatus());
         System.out.println("Studio        : " + studio);
         System.out.println("Total Episode : " + totalEpisode);
         System.out.println("Musim         : " + musim);

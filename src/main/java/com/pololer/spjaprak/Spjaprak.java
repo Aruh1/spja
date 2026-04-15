@@ -73,13 +73,6 @@ public class Spjaprak {
             gbc.insets = new Insets(5, 10, 5, 10);
             panel.add(btnFilm, gbc);
 
-            // Tombol 3: Kelola Jadwal Tayang
-            JButton btnJadwal = new JButton("Kelola Jadwal Tayang");
-            btnJadwal.addActionListener(e -> new GUI_JadwalTayang());
-            gbc.gridy = 5;
-            gbc.insets = new Insets(5, 10, 5, 10);
-            panel.add(btnJadwal, gbc);
-
             // Tombol 4: Keluar
             JButton btnExit = new JButton("Keluar");
             btnExit.addActionListener(e -> System.exit(0));

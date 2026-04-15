@@ -119,10 +119,10 @@ public class AnimeFilm extends Media {
     @Override
     public void tampilkanDetail() {
         System.out.println("======== Detail Anime Film ========");
-        System.out.println("Judul         : " + judul);
-        System.out.println("Genre         : " + genre);
-        System.out.println("Tahun Rilis   : " + tahunRilis);
-        System.out.println("Status        : " + status);
+        System.out.println("Judul         : " + getJudul());
+        System.out.println("Genre         : " + getGenre());
+        System.out.println("Tahun Rilis   : " + getTahunRilis());
+        System.out.println("Status        : " + getStatus());
         System.out.println("Durasi        : " + getFormatDurasi() + " (" + durasiMenit + " menit)");
         System.out.println("Tanggal Rilis : " + tanggalRilis);
         System.out.println("Distributor   : " + distributor);

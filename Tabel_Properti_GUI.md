@@ -53,43 +53,15 @@ Berikut adalah rincian komponen GUI yang terdapat pada proyek SPJA (Sistem Penja
 |  18   | `lblInfo`         | Name<br>Text  | lblInfo<br>Pilih film dari tabel, lalu klik Tampilkan Info.                    |
 |  19   | `tableFilm`       | Name<br>Model | tableFilm<br>[Judul, Genre, Tahun, Status, Durasi, Tanggal Rilis, Distributor] |
 
-### 3. Tabel Properti Desain `GUI_JadwalTayang.java`
-
-|  No   | Nama Komponen     | Properti      | Value                                                                                |
-| :---: | :---------------- | :------------ | :----------------------------------------------------------------------------------- |
-|   1   | `JLabel` (anonim) | Text          | Judul:                                                                               |
-|   2   | `JLabel` (anonim) | Text          | Genre:                                                                               |
-|   3   | `JLabel` (anonim) | Text          | Hari Tayang:                                                                         |
-|   4   | `JLabel` (anonim) | Text          | Jam Tayang (HH:mm):                                                                  |
-|   5   | `JLabel` (anonim) | Text          | Stasiun/Platform:                                                                    |
-|   6   | `JLabel` (anonim) | Text          | Durasi (menit):                                                                      |
-|   7   | `JLabel` (anonim) | Text          | Status Tayang:                                                                       |
-|   8   | `tfJudul`         | Name<br>Text  | tfJudul<br>*(kosong)*                                                                |
-|   9   | `tfGenre`         | Name<br>Text  | tfGenre<br>*(kosong)*                                                                |
-|  10   | `tfHari`          | Name<br>Text  | tfHari<br>*(kosong)*                                                                 |
-|  11   | `tfJam`           | Name<br>Text  | tfJam<br>*(kosong)*                                                                  |
-|  12   | `tfStasiun`       | Name<br>Text  | tfStasiun<br>*(kosong)*                                                              |
-|  13   | `tfDurasi`        | Name<br>Text  | tfDurasi<br>*(kosong)*                                                               |
-|  14   | `tfStatus`        | Name<br>Text  | tfStatus<br>*(kosong)*                                                               |
-|  15   | `btnTambah`       | Name<br>Text  | btnTambah<br>Tambah Jadwal                                                           |
-|  16   | `btnHitung`       | Name<br>Text  | btnHitung<br>Hitung Jam Selesai                                                      |
-|  17   | `lblJamSelesai`   | Name<br>Text  | lblJamSelesai<br>Jam Selesai: -                                                      |
-|  18   | `btnInfo`         | Name<br>Text  | btnInfo<br>Tampilkan Info                                                            |
-|  19   | `lblInfo`         | Name<br>Text  | lblInfo<br>Pilih jadwal dari tabel, lalu klik Tampilkan Info.                        |
-|  20   | `tableJadwal`     | Name<br>Model | tableJadwal<br>[Judul, Genre, Hari, Jam Mulai, Jam Selesai, Durasi, Stasiun, Status] |
-
-### 4. Tabel Properti Desain `Spjaprak.java` (Menu Utama)
+### 3. Tabel Properti Desain `Spjaprak.java` (Menu Utama)
 
 |  No   | Nama Komponen    | Properti      | Value                                           |
 | :---: | :--------------- | :------------ | :---------------------------------------------- |
 |   1   | `frame` (JFrame) | Name<br>Title | frame<br>SPJA — Sistem Penjadwalan Tayang Anime |
 |   2   | `lblTitle`       | Name<br>Text  | lblTitle<br>Sistem Penjadwalan Tayang Anime     |
-|   3   | `lblBab3`        | Name<br>Text  | lblBab3<br>BAB 3 — Inheritance                  |
-|   4   | `btnAnime`       | Name<br>Text  | btnAnime<br>Kelola Anime Series                 |
-|   5   | `btnFilm`        | Name<br>Text  | btnFilm<br>Kelola Anime Film                    |
-|   6   | `lblBab4`        | Name<br>Text  | lblBab4<br>BAB 4 — Enkapsulasi                  |
-|   7   | `btnJadwal`      | Name<br>Text  | btnJadwal<br>Kelola Jadwal Tayang               |
-|   8   | `btnExit`        | Name<br>Text  | btnExit<br>Keluar                               |
+|   3   | `btnAnime`       | Name<br>Text  | btnAnime<br>Kelola Anime Series                 |
+|   4   | `btnFilm`        | Name<br>Text  | btnFilm<br>Kelola Anime Film                    |
+|   5   | `btnExit`        | Name<br>Text  | btnExit<br>Keluar                               |
 
 ---
 
@@ -130,19 +102,7 @@ Berikut adalah rincian komponen GUI yang terdapat pada proyek SPJA (Sistem Penja
 | - listFilm : ArrayList&lt;AnimeFilm&gt;<br>- tfJudul : JTextField<br>- tfGenre : JTextField<br>- tfTahun : JTextField<br>- tfStatus : JTextField<br>- tfDurasi : JTextField<br>- tfTanggal : JTextField<br>- tfDistributor : JTextField<br>- tableFilm : JTable<br>- modelFilm : DefaultTableModel<br>- lblStatusTayang : JLabel<br>- lblInfo : JLabel |
 | + GUI_AnimeFilm()<br>- initComponents() : void<br>- addFormField(panel: JPanel, gbc: GridBagConstraints, label: String, row: int) : JTextField<br>- updateStatusTayang() : void<br>- tambahFilm() : void<br>- clearFields() : void<br>- tampilkanInfo() : void<br>+ main(args: String[]) : void                                                        |
 
-### Class diagram (Class JadwalTayang.java):
 
-| JadwalTayang |
-| :--- |
-| - judul : String<br>- genre : String<br>- hariTayang : String<br>- jamTayang : String<br>- stasiun : String<br>- durasiMenit : int<br>- statusTayang : String |
-| + JadwalTayang(judul: String, genre: String, hariTayang: String, jamTayang: String, stasiun: String, durasiMenit: int, statusTayang: String)<br>+ hitungJamSelesai() : String<br>+ getFormatDurasi() : String<br>+ getInfo() : String<br>+ tampilkanDetail() : void<br>+ getJudul() : String<br>+ setJudul(judul: String) : void<br>+ getGenre() : String<br>+ setGenre(genre: String) : void<br>+ getHariTayang() : String<br>+ setHariTayang(hariTayang: String) : void<br>+ getJamTayang() : String<br>+ setJamTayang(jamTayang: String) : void<br>+ getStasiun() : String<br>+ setStasiun(stasiun: String) : void<br>+ getDurasiMenit() : int<br>+ setDurasiMenit(durasiMenit: int) : void<br>+ getStatusTayang() : String<br>+ setStatusTayang(statusTayang: String) : void |
-
-### Class diagram (Class GUI_JadwalTayang.java):
-
-| GUI_JadwalTayang |
-| :--- |
-| - listJadwal : ArrayList&lt;JadwalTayang&gt;<br>- tfJudul : JTextField<br>- tfGenre : JTextField<br>- tfHari : JTextField<br>- tfJam : JTextField<br>- tfStasiun : JTextField<br>- tfDurasi : JTextField<br>- tfStatus : JTextField<br>- tableJadwal : JTable<br>- modelJadwal : DefaultTableModel<br>- lblJamSelesai : JLabel<br>- lblInfo : JLabel |
-| + GUI_JadwalTayang()<br>- initComponents() : void<br>- addFormField(panel: JPanel, gbc: GridBagConstraints, label: String, row: int) : JTextField<br>- tambahJadwal() : void<br>- clearFields() : void<br>- hitungJamSelesai() : void<br>- tampilkanInfo() : void<br>+ main(args: String[]) : void |
 
 ### Class diagram (Class Spjaprak.java):
 

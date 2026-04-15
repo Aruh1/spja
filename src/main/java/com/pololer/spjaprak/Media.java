@@ -39,16 +39,16 @@ package com.pololer.spjaprak;
 public class Media {
 
     /** Judul dari media. */
-    protected String judul;
+    private String judul;
 
     /** Genre dari media (contoh: "Action", "Romance", "Fantasy"). */
-    protected String genre;
+    private String genre;
 
     /** Tahun rilis media. */
-    protected int tahunRilis;
+    private int tahunRilis;
 
     /** Status tayang media (contoh: "Ongoing", "Completed", "Upcoming"). */
-    protected String status;
+    private String status;
 
     /**
      * Constructor untuk membuat objek Media baru.
