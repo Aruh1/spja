@@ -73,6 +73,21 @@ public class GUI_Anime extends JFrame {
     /** Field input hari tayang anime. */
     private JTextField tfHari;
 
+    /** Tombol Tambah Anime. */
+    private JButton btnTambah;
+
+    /** Tombol Hapus Anime. */
+    private JButton btnHapus;
+
+    /** Tombol Simpan (Clear fields). */
+    private JButton btnSimpan;
+
+    /** Tombol Batal (Cancel - clear form). */
+    private JButton btnBatal;
+
+    /** Tombol Close. */
+    private JButton btnClose;
+
     /** Tabel untuk menampilkan data anime series. */
     private JTable tableAnime;
 
@@ -123,7 +138,7 @@ public class GUI_Anime extends JFrame {
         tfHari = addFormField(formPanel, gbc, "Hari Tayang:", 7);
 
         // Tombol Tambah Anime
-        JButton btnTambah = new JButton("Tambah Anime");
+        btnTambah = new JButton("Tambah Anime");
         btnTambah.addActionListener(e -> tambahAnime());
         gbc.gridx = 0;
         gbc.gridy = 8;
@@ -144,7 +159,32 @@ public class GUI_Anime extends JFrame {
         };
         tableAnime = new JTable(modelAnime);
         JScrollPane scrollPane = new JScrollPane(tableAnime);
-        add(scrollPane, BorderLayout.CENTER);
+
+        // ===== PANEL TOMBOL AKSI (Simpan, Hapus, Batal, Close) =====
+        JPanel buttonActionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        buttonActionPanel.setBorder(BorderFactory.createTitledBorder("Aksi"));
+
+        btnSimpan = new JButton("Simpan");
+        btnSimpan.addActionListener(e -> simpanData());
+        buttonActionPanel.add(btnSimpan);
+
+        btnHapus = new JButton("Hapus");
+        btnHapus.addActionListener(e -> hapusAnime());
+        buttonActionPanel.add(btnHapus);
+
+        btnBatal = new JButton("Batal");
+        btnBatal.addActionListener(e -> clearFields());
+        buttonActionPanel.add(btnBatal);
+
+        btnClose = new JButton("Close");
+        btnClose.addActionListener(e -> dispose());
+        buttonActionPanel.add(btnClose);
+
+        // ===== PANEL ATAS BOTTOM AREA (Tombol Aksi + Tabel) =====
+        JPanel centerWrapperPanel = new JPanel(new BorderLayout(5, 5));
+        centerWrapperPanel.add(scrollPane, BorderLayout.CENTER);
+        centerWrapperPanel.add(buttonActionPanel, BorderLayout.SOUTH);
+        add(centerWrapperPanel, BorderLayout.CENTER);
 
         // ===== PANEL BAWAH (Progress + Info) =====
         JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
@@ -277,6 +317,57 @@ public class GUI_Anime extends JFrame {
         tfEpisode.setText("");
         tfMusim.setText("");
         tfHari.setText("");
+    }
+
+    /**
+     * Aksi tombol "Simpan". Menyimpan data dari list ke konsol dan menampilkan
+     * pesan bahwa data telah disimpan.
+     */
+    private void simpanData() {
+        if (listAnime.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Tidak ada data untuk disimpan!",
+                    "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        System.out.println("\n========== SIMPAN DATA ANIME ==========");
+        System.out.println("Total Anime: " + listAnime.size());
+        for (int i = 0; i < listAnime.size(); i++) {
+            System.out.println((i + 1) + ". " + listAnime.get(i).getInfo());
+        }
+        System.out.println("=======================================\n");
+
+        JOptionPane.showMessageDialog(this,
+                "Data disimpan! Total: " + listAnime.size() + " anime.\n"
+                + "Lihat console untuk detail.",
+                "Simpan Berhasil", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Aksi tombol "Hapus". Menghapus anime yang dipilih dari tabel dan list.
+     */
+    private void hapusAnime() {
+        int selectedRow = tableAnime.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Pilih anime dari tabel terlebih dahulu!",
+                    "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String judul = listAnime.get(selectedRow).getJudul();
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Yakin ingin menghapus anime \"" + judul + "\"?",
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            listAnime.remove(selectedRow);
+            modelAnime.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this,
+                    "Anime \"" + judul + "\" berhasil dihapus!",
+                    "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**

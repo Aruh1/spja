@@ -130,6 +130,145 @@ public class AnimeFilm extends Media {
         System.out.println("====================================");
     }
 
+    // ===== Overloading Methods (AnimeFilm-specific) =====
+
+    /**
+     * Overloading getFormatDurasi() — mengembalikan durasi dengan format custom.
+     *
+     * @param format format durasi ("FULL", "SHORT", "MENIT")
+     * @return String durasi dengan format yang diminta
+     */
+    public String getFormatDurasi(String format) {
+        if ("SHORT".equalsIgnoreCase(format)) {
+            // Format singkat: "1j 54m"
+            return getFormatDurasi();
+        } else if ("MENIT".equalsIgnoreCase(format)) {
+            // Hanya dalam menit
+            return durasiMenit + " menit";
+        } else {
+            // Format penuh: "1 jam 54 menit"
+            int jam = durasiMenit / 60;
+            int menit = durasiMenit % 60;
+            return jam + " jam " + menit + " menit";
+        }
+    }
+
+    /**
+     * Overloading getFormatDurasi() — mengembalikan durasi dengan durasi custom.
+     *
+     * @param durasiCustom durasi dalam menit yang akan diformat (berbeda dari durasiMenit)
+     * @return String durasi custom dalam format "Xj Ym"
+     */
+    public String getFormatDurasi(int durasiCustom) {
+        int jam = durasiCustom / 60;
+        int menit = durasiCustom % 60;
+        return jam + "j " + menit + "m";
+    }
+
+    /**
+     * Overloading sudahTayang() — mengecek status tayang berdasarkan tanggal custom.
+     *
+     * @param tanggalCek tanggal untuk pengecekan (format "DD-MM-YYYY")
+     * @return true jika tanggalRilis &le; tanggalCek
+     */
+    public boolean sudahTayang(String tanggalCek) {
+        try {
+            LocalDate rilisDate = LocalDate.parse(tanggalRilis, FORMATTER);
+            LocalDate checkDate = LocalDate.parse(tanggalCek, FORMATTER);
+            return !rilisDate.isAfter(checkDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Overloading sudahTayang() — mengecek status tayang berdasarkan hari offset.
+     *
+     * @param hariOffset jumlah hari dari hari ini (negatif = masa lalu, positif = masa depan)
+     * @return true jika tanggalRilis &le; (hari ini + hariOffset)
+     */
+    public boolean sudahTayang(int hariOffset) {
+        try {
+            LocalDate rilisDate = LocalDate.parse(tanggalRilis, FORMATTER);
+            LocalDate checkDate = LocalDate.now().plusDays(hariOffset);
+            return !rilisDate.isAfter(checkDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Overloading getInfo() — mengembalikan info dengan distributor dan rilis date.
+     *
+     * @param withDistributor jika true, tampilkan distributor dalam info
+     * @param withReleaseDate jika true, tampilkan tanggal rilis dalam info
+     * @return String berisi info film dengan filter
+     */
+    public String getInfo(boolean withDistributor, boolean withReleaseDate) {
+        StringBuilder info = new StringBuilder(getJudul());
+        info.append(" | ").append(getFormatDurasi());
+        if (withDistributor) {
+            info.append(" | Distributor: ").append(distributor);
+        }
+        if (withReleaseDate) {
+            info.append(" | Rilis: ").append(tanggalRilis);
+        }
+        return info.toString();
+    }
+
+    /**
+     * Overloading getInfo() — mengembalikan info dengan filter field spesifik.
+     *
+     * @param fieldFilter field mana yang ditampilkan ("DURASI", "DISTRIBUTOR", "RILIS", "ALL")
+     * @return String berisi info film sesuai filter
+     */
+    public String getInfo(String fieldFilter) {
+        switch (fieldFilter.toUpperCase()) {
+            case "DURASI":
+                return getJudul() + " | Durasi: " + getFormatDurasi();
+            case "DISTRIBUTOR":
+                return getJudul() + " | Distributor: " + distributor;
+            case "RILIS":
+                return getJudul() + " | Rilis: " + tanggalRilis + " | Status: " + (sudahTayang() ? "Sudah Tayang" : "Belum Tayang");
+            case "ALL":
+            default:
+                return getInfo();
+        }
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan informasi status tayang.
+     *
+     * @param withStatusDetail jika true, tampilkan detail status tayang
+     */
+    public void tampilkanDetail(boolean withStatusDetail) {
+        tampilkanDetail();
+        if (withStatusDetail) {
+            System.out.println("Status Tayang Detail:");
+            System.out.println("  - Hari Ini    : " + (sudahTayang() ? "Sudah Tayang" : "Belum Tayang"));
+            System.out.println("  - 1 Minggu KD : " + (sudahTayang(7) ? "Sudah Tayang" : "Belum Tayang"));
+            System.out.println("  - 1 Bulan KD  : " + (sudahTayang(30) ? "Sudah Tayang" : "Belum Tayang"));
+        }
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan info durasi custom.
+     *
+     * @param durationFormat format durasi yang ingin ditampilkan ("FULL", "SHORT", "MENIT")
+     */
+    public void tampilkanDetail(String durationFormat) {
+        System.out.println("======== Detail Anime Film ========");
+        System.out.println("Judul         : " + getJudul());
+        System.out.println("Genre         : " + getGenre());
+        System.out.println("Tahun Rilis   : " + getTahunRilis());
+        System.out.println("Status        : " + getStatus());
+        System.out.println("Durasi        : " + getFormatDurasi(durationFormat));
+        System.out.println("Tanggal Rilis : " + tanggalRilis);
+        System.out.println("Distributor   : " + distributor);
+        System.out.println("Sudah Tayang  : " + (sudahTayang() ? "Ya" : "Belum"));
+        System.out.println("====================================");
+    }
+
     // ===== Getter & Setter =====
 
     /**

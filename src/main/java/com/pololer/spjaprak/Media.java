@@ -87,6 +87,71 @@ public class Media {
         System.out.println("==================================");
     }
 
+    // ===== Overloading Methods =====
+
+    /**
+     * Overloading getInfo() — mengembalikan info hanya judul dan genre.
+     *
+     * @param showGenre jika true, tampilkan genre dalam info
+     * @return String berisi judul dan genre media
+     */
+    public String getInfo(boolean showGenre) {
+        if (showGenre) {
+            return "Judul: " + judul + " | Genre: " + genre;
+        } else {
+            return "Judul: " + judul;
+        }
+    }
+
+    /**
+     * Overloading getInfo() — mengembalikan info dengan delimiter kustom.
+     *
+     * @param delimiter pemisah custom untuk setiap field
+     * @return String berisi info media dengan delimiter kustom
+     */
+    public String getInfo(String delimiter) {
+        return "Judul: " + judul + delimiter + "Genre: " + genre
+                + delimiter + "Tahun: " + tahunRilis + delimiter + "Status: " + status;
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan limit field.
+     *
+     * @param limit jumlah field yang akan ditampilkan (1-4, dimulai dari judul)
+     */
+    public void tampilkanDetail(int limit) {
+        System.out.println("========== Detail Media (Limited) ==========");
+        if (limit >= 1) {
+            System.out.println("Judul       : " + judul);
+        }
+        if (limit >= 2) {
+            System.out.println("Genre       : " + genre);
+        }
+        if (limit >= 3) {
+            System.out.println("Tahun Rilis : " + tahunRilis);
+        }
+        if (limit >= 4) {
+            System.out.println("Status      : " + status);
+        }
+        System.out.println("===========================================");
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan format custom.
+     *
+     * @param format format display ("SIMPLE", "FULL", "COMPACT")
+     */
+    public void tampilkanDetail(String format) {
+        if ("SIMPLE".equalsIgnoreCase(format)) {
+            System.out.println(">> " + judul);
+        } else if ("COMPACT".equalsIgnoreCase(format)) {
+            System.out.println(judul + " (" + tahunRilis + ") - " + status);
+        } else {
+            // Default FULL format
+            tampilkanDetail();
+        }
+    }
+
     // ===== Getter & Setter =====
 
     /**

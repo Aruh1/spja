@@ -72,6 +72,21 @@ public class GUI_AnimeFilm extends JFrame {
     /** Field input distributor film. */
     private JTextField tfDistributor;
 
+    /** Tombol Tambah Film. */
+    private JButton btnTambah;
+
+    /** Tombol Hapus Film. */
+    private JButton btnHapus;
+
+    /** Tombol Simpan. */
+    private JButton btnSimpan;
+
+    /** Tombol Batal. */
+    private JButton btnBatal;
+
+    /** Tombol Close. */
+    private JButton btnClose;
+
     /** Tabel untuk menampilkan data anime film. */
     private JTable tableFilm;
 
@@ -150,7 +165,7 @@ public class GUI_AnimeFilm extends JFrame {
         });
 
         // Tombol Tambah Film
-        JButton btnTambah = new JButton("Tambah Film");
+        btnTambah = new JButton("Tambah Film");
         btnTambah.addActionListener(e -> tambahFilm());
         gbc.gridx = 0;
         gbc.gridy = 8;
@@ -171,7 +186,32 @@ public class GUI_AnimeFilm extends JFrame {
         };
         tableFilm = new JTable(modelFilm);
         JScrollPane scrollPane = new JScrollPane(tableFilm);
-        add(scrollPane, BorderLayout.CENTER);
+
+        // ===== PANEL TOMBOL AKSI (Simpan, Hapus, Batal, Close) =====
+        JPanel buttonActionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        buttonActionPanel.setBorder(BorderFactory.createTitledBorder("Aksi"));
+
+        btnSimpan = new JButton("Simpan");
+        btnSimpan.addActionListener(e -> simpanData());
+        buttonActionPanel.add(btnSimpan);
+
+        btnHapus = new JButton("Hapus");
+        btnHapus.addActionListener(e -> hapusFilm());
+        buttonActionPanel.add(btnHapus);
+
+        btnBatal = new JButton("Batal");
+        btnBatal.addActionListener(e -> clearFields());
+        buttonActionPanel.add(btnBatal);
+
+        btnClose = new JButton("Close");
+        btnClose.addActionListener(e -> dispose());
+        buttonActionPanel.add(btnClose);
+
+        // ===== PANEL WRAPPER (Tabel + Tombol Aksi) =====
+        JPanel centerWrapperPanel = new JPanel(new BorderLayout(5, 5));
+        centerWrapperPanel.add(scrollPane, BorderLayout.CENTER);
+        centerWrapperPanel.add(buttonActionPanel, BorderLayout.SOUTH);
+        add(centerWrapperPanel, BorderLayout.CENTER);
 
         // ===== PANEL BAWAH (Info) =====
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -309,6 +349,57 @@ public class GUI_AnimeFilm extends JFrame {
         tfDistributor.setText("");
         lblStatusTayang.setText("Status Tayang: -");
         lblStatusTayang.setForeground(Color.BLACK);
+    }
+
+    /**
+     * Aksi tombol "Simpan". Menyimpan data dari list ke konsol dan menampilkan
+     * pesan bahwa data telah disimpan.
+     */
+    private void simpanData() {
+        if (listFilm.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Tidak ada data untuk disimpan!",
+                    "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        System.out.println("\n========== SIMPAN DATA ANIME FILM ==========");
+        System.out.println("Total Film: " + listFilm.size());
+        for (int i = 0; i < listFilm.size(); i++) {
+            System.out.println((i + 1) + ". " + listFilm.get(i).getInfo());
+        }
+        System.out.println("===========================================\n");
+
+        JOptionPane.showMessageDialog(this,
+                "Data disimpan! Total: " + listFilm.size() + " film.\n"
+                + "Lihat console untuk detail.",
+                "Simpan Berhasil", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Aksi tombol "Hapus". Menghapus film yang dipilih dari tabel dan list.
+     */
+    private void hapusFilm() {
+        int selectedRow = tableFilm.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Pilih film dari tabel terlebih dahulu!",
+                    "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String judul = listFilm.get(selectedRow).getJudul();
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Yakin ingin menghapus film \"" + judul + "\"?",
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            listFilm.remove(selectedRow);
+            modelFilm.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this,
+                    "Film \"" + judul + "\" berhasil dihapus!",
+                    "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**

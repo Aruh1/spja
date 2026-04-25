@@ -122,6 +122,97 @@ public class Anime extends Media {
         System.out.println("====================================");
     }
 
+    // ===== Overloading Methods (Anime-specific) =====
+
+    /**
+     * Overloading getProgressTayang() — menghitung progress dengan episode range.
+     *
+     * @param episodeSaatIni episode yang sudah tayang
+     * @param episodeTarget target episode (jika berbeda dari totalEpisode)
+     * @return persentase progress terhadap target
+     */
+    public double getProgressTayang(int episodeSaatIni, int episodeTarget) {
+        if (episodeTarget <= 0) {
+            return 0.0;
+        }
+        return ((double) episodeSaatIni / episodeTarget) * 100.0;
+    }
+
+    /**
+     * Overloading getInfo() — mengembalikan info hanya jadwal tayang anime.
+     *
+     * @param scheduleOnly jika true, hanya tampilkan jadwal (musim, hari, episode)
+     * @return String berisi informasi jadwal anime
+     */
+    public String getInfo(boolean scheduleOnly) {
+        if (scheduleOnly) {
+            return getJudul() + " | Musim: " + musim + " | Hari: " + hariTayang
+                    + " | Episode: " + totalEpisode;
+        } else {
+            return getInfo();
+        }
+    }
+
+    /**
+     * Overloading getInfo() — mengembalikan info dengan studio dan genre filter.
+     *
+     * @param studioOnly jika true, hanya tampilkan nama studio dan judul
+     * @param withGenre jika true, tambahkan genre dalam info
+     * @return String berisi info anime dengan filter
+     */
+    public String getInfo(boolean studioOnly, boolean withGenre) {
+        StringBuilder info = new StringBuilder();
+        info.append(getJudul());
+        if (studioOnly) {
+            info.append(" | Studio: ").append(studio);
+        }
+        if (withGenre) {
+            info.append(" | Genre: ").append(getGenre());
+        }
+        return info.toString();
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan format anime-spesifik.
+     *
+     * @param withProgress jika true, tampilkan progress calculator
+     * @param episodeSaatIni episode untuk perhitungan progress (hanya jika withProgress true)
+     */
+    public void tampilkanDetail(boolean withProgress, int episodeSaatIni) {
+        tampilkanDetail();
+        if (withProgress) {
+            double progress = getProgressTayang(episodeSaatIni);
+            System.out.println("Progress     : " + String.format("%.2f%%", progress)
+                    + " (Episode " + episodeSaatIni + " dari " + totalEpisode + ")");
+        }
+    }
+
+    /**
+     * Overloading tampilkanDetail() — menampilkan detail dengan filter field.
+     *
+     * @param includeStudio tampilkan studio
+     * @param includeMusim tampilkan musim
+     * @param includeHari tampilkan hari tayang
+     */
+    public void tampilkanDetail(boolean includeStudio, boolean includeMusim, boolean includeHari) {
+        System.out.println("======= Detail Anime Series (Filtered) =======");
+        System.out.println("Judul         : " + getJudul());
+        System.out.println("Genre         : " + getGenre());
+        System.out.println("Tahun Rilis   : " + getTahunRilis());
+        System.out.println("Status        : " + getStatus());
+        if (includeStudio) {
+            System.out.println("Studio        : " + studio);
+        }
+        System.out.println("Total Episode : " + totalEpisode);
+        if (includeMusim) {
+            System.out.println("Musim         : " + musim);
+        }
+        if (includeHari) {
+            System.out.println("Hari Tayang   : " + hariTayang);
+        }
+        System.out.println("===============================================");
+    }
+
     // ===== Getter & Setter =====
 
     /**
