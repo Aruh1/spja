@@ -19,6 +19,8 @@ package com.pololer.spjaprak;
  * Konsep OOP yang diterapkan:
  * </p>
  * <ul>
+ * <li><b>Abstraction</b> — mengimplementasikan method abstract
+ *     {@code getInfoLengkap()} dan {@code hitungNilai()} dari parent class</li>
  * <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
  * <li><b>Overriding</b> — override method {@code getInfo()} dan
  * {@code tampilkanDetail()}</li>
@@ -26,7 +28,7 @@ package com.pololer.spjaprak;
  * </ul>
  *
  * @author Administrator
- * @version 1.0
+ * @version 2.0
  * @see Media
  */
 public class Anime extends Media {
@@ -46,7 +48,7 @@ public class Anime extends Media {
     /**
      * Constructor untuk membuat objek Anime baru.
      * Menggunakan {@code super()} untuk memanggil constructor parent class
-     * {@link Media}.
+     * {@link Media} (abstract class).
      *
      * @param judul judul anime
      * @param genre genre anime
@@ -59,13 +61,77 @@ public class Anime extends Media {
      */
     public Anime(String judul, String genre, int tahunRilis, String status,
             String studio, int totalEpisode, String musim, String hariTayang) {
-        // Memanggil constructor parent class Media menggunakan super()
+        // Memanggil constructor parent abstract class Media menggunakan super()
         super(judul, genre, tahunRilis, status);
         this.studio = studio;
         this.totalEpisode = totalEpisode;
         this.musim = musim;
         this.hariTayang = hariTayang;
     }
+
+    // ===== Implementasi Abstract Methods dari Media =====
+
+    /**
+     * Implementasi method abstract {@code getInfoLengkap()} dari {@link Media}.
+     * Mengembalikan informasi lengkap anime series dalam format multi-baris
+     * yang terstruktur, termasuk semua atribut parent dan atribut khusus anime.
+     *
+     * @return String berisi informasi lengkap anime series yang sudah diformat
+     */
+    @Override
+    public String getInfoLengkap() {
+        return "=== INFO LENGKAP ANIME SERIES ===\n"
+                + "Judul         : " + getJudul() + "\n"
+                + "Genre         : " + getGenre() + "\n"
+                + "Tahun Rilis   : " + getTahunRilis() + "\n"
+                + "Status        : " + getStatus() + "\n"
+                + "Studio        : " + studio + "\n"
+                + "Total Episode : " + totalEpisode + "\n"
+                + "Musim         : " + musim + "\n"
+                + "Hari Tayang   : " + hariTayang + "\n"
+                + "==================================";
+    }
+
+    /**
+     * Implementasi method abstract {@code hitungNilai()} dari {@link Media}.
+     * Menghitung skor prioritas anime berdasarkan total episode dan status tayang.
+     *
+     * <p>
+     * Logika perhitungan:
+     * </p>
+     * <ul>
+     * <li>Skor dasar = total episode × 1.5</li>
+     * <li>Bonus status "Ongoing" = +20 poin (prioritas tinggi karena masih tayang)</li>
+     * <li>Bonus status "Upcoming" = +10 poin (akan datang)</li>
+     * <li>Bonus status "Completed" = +5 poin (sudah selesai)</li>
+     * </ul>
+     *
+     * @return skor prioritas anime dalam bentuk double
+     */
+    @Override
+    public double hitungNilai() {
+        // Skor dasar berdasarkan jumlah episode
+        double skor = totalEpisode * 1.5;
+
+        // Bonus berdasarkan status tayang
+        switch (getStatus().toLowerCase()) {
+            case "ongoing":
+                skor += 20.0; // Prioritas tinggi karena masih tayang
+                break;
+            case "upcoming":
+                skor += 10.0; // Prioritas menengah, akan datang
+                break;
+            case "completed":
+                skor += 5.0;  // Prioritas rendah, sudah selesai
+                break;
+            default:
+                break;
+        }
+
+        return skor;
+    }
+
+    // ===== Methods Khusus Anime =====
 
     /**
      * Menghitung persentase progress tayang anime berdasarkan episode saat ini.
@@ -90,6 +156,8 @@ public class Anime extends Media {
         return getJudul() + " | Musim: " + musim + " | Hari: " + hariTayang
                 + " | Episode: " + totalEpisode + " | Status: " + getStatus();
     }
+
+    // ===== Override Methods dari Media =====
 
     /**
      * Override method {@code getInfo()} dari parent class {@link Media}.

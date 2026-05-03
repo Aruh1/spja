@@ -23,6 +23,8 @@ import java.time.format.DateTimeParseException;
  * Konsep OOP yang diterapkan:
  * </p>
  * <ul>
+ * <li><b>Abstraction</b> — mengimplementasikan method abstract
+ *     {@code getInfoLengkap()} dan {@code hitungNilai()} dari parent class</li>
  * <li><b>Inheritance</b> — menggunakan keyword {@code extends}</li>
  * <li><b>Overriding</b> — override method {@code getInfo()} dan
  * {@code tampilkanDetail()}</li>
@@ -30,7 +32,7 @@ import java.time.format.DateTimeParseException;
  * </ul>
  *
  * @author Administrator
- * @version 1.0
+ * @version 2.0
  * @see Media
  */
 public class AnimeFilm extends Media {
@@ -50,7 +52,7 @@ public class AnimeFilm extends Media {
     /**
      * Constructor untuk membuat objek AnimeFilm baru.
      * Menggunakan {@code super()} untuk memanggil constructor parent class
-     * {@link Media}.
+     * {@link Media} (abstract class).
      *
      * @param judul judul film anime
      * @param genre genre film
@@ -62,12 +64,78 @@ public class AnimeFilm extends Media {
      */
     public AnimeFilm(String judul, String genre, int tahunRilis, String status,
             int durasiMenit, String tanggalRilis, String distributor) {
-        // Memanggil constructor parent class Media menggunakan super()
+        // Memanggil constructor parent abstract class Media menggunakan super()
         super(judul, genre, tahunRilis, status);
         this.durasiMenit = durasiMenit;
         this.tanggalRilis = tanggalRilis;
         this.distributor = distributor;
     }
+
+    // ===== Implementasi Abstract Methods dari Media =====
+
+    /**
+     * Implementasi method abstract {@code getInfoLengkap()} dari {@link Media}.
+     * Mengembalikan informasi lengkap film anime dalam format multi-baris
+     * yang terstruktur, termasuk semua atribut parent dan atribut khusus film.
+     *
+     * @return String berisi informasi lengkap film anime yang sudah diformat
+     */
+    @Override
+    public String getInfoLengkap() {
+        return "=== INFO LENGKAP ANIME FILM ===\n"
+                + "Judul         : " + getJudul() + "\n"
+                + "Genre         : " + getGenre() + "\n"
+                + "Tahun Rilis   : " + getTahunRilis() + "\n"
+                + "Status        : " + getStatus() + "\n"
+                + "Durasi        : " + getFormatDurasi() + " (" + durasiMenit + " menit)\n"
+                + "Tanggal Rilis : " + tanggalRilis + "\n"
+                + "Distributor   : " + distributor + "\n"
+                + "Sudah Tayang  : " + (sudahTayang() ? "Ya" : "Belum") + "\n"
+                + "================================";
+    }
+
+    /**
+     * Implementasi method abstract {@code hitungNilai()} dari {@link Media}.
+     * Menghitung skor prioritas film anime berdasarkan durasi dan status rilis.
+     *
+     * <p>
+     * Logika perhitungan:
+     * </p>
+     * <ul>
+     * <li>Skor dasar = durasi (menit) × 0.5</li>
+     * <li>Bonus jika sudah tayang = +15 poin</li>
+     * <li>Bonus status "Upcoming" = +25 poin (prioritas tinggi karena belum rilis)</li>
+     * <li>Bonus status "Completed" = +10 poin</li>
+     * </ul>
+     *
+     * @return skor prioritas film anime dalam bentuk double
+     */
+    @Override
+    public double hitungNilai() {
+        // Skor dasar berdasarkan durasi film
+        double skor = durasiMenit * 0.5;
+
+        // Bonus berdasarkan status rilis
+        if (sudahTayang()) {
+            skor += 15.0; // Film yang sudah tayang mendapat bonus
+        }
+
+        // Bonus tambahan berdasarkan status
+        switch (getStatus().toLowerCase()) {
+            case "upcoming":
+                skor += 25.0; // Prioritas tinggi karena ditunggu-tunggu
+                break;
+            case "completed":
+                skor += 10.0; // Sudah selesai
+                break;
+            default:
+                break;
+        }
+
+        return skor;
+    }
+
+    // ===== Methods Khusus AnimeFilm =====
 
     /**
      * Mengubah durasi dari menit ke format "Xj Ym".
@@ -99,6 +167,8 @@ public class AnimeFilm extends Media {
             return false;
         }
     }
+
+    // ===== Override Methods dari Media =====
 
     /**
      * Override method {@code getInfo()} dari parent class {@link Media}.

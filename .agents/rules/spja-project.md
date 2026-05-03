@@ -18,7 +18,7 @@ SPJA (Sistem Penjadwalan Tayang Anime) is a desktop Java Swing application for m
 
 ## Class Hierarchy
 ```
-Media (superclass, protected fields)
+Media (abstract superclass, private fields, abstract methods: getInfoLengkap(), hitungNilai())
 ├── Anime (anime series — studio, totalEpisode, musim, hariTayang)
 └── AnimeFilm (anime films — durasiMenit, tanggalRilis, distributor)
 

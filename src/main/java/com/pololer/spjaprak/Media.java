@@ -5,8 +5,15 @@
 package com.pololer.spjaprak;
 
 /**
- * Class Media merupakan parent class (superclass) yang merepresentasikan
+ * Abstract class Media merupakan parent class (superclass) yang merepresentasikan
  * sebuah entitas media secara umum dalam Sistem Penjadwalan Tayang Anime (SPJA).
+ *
+ * <p>
+ * Class ini menggunakan konsep <b>Abstraksi (Abstraction)</b> dalam OOP.
+ * Sebuah abstract class tidak dapat diinstansiasi secara langsung, melainkan
+ * harus di-extend oleh class turunan (subclass) yang mengimplementasikan
+ * seluruh method abstract yang didefinisikan di class ini.
+ * </p>
  *
  * <p>
  * Class ini menyimpan informasi dasar seperti judul, genre, tahun rilis,
@@ -14,29 +21,43 @@ package com.pololer.spjaprak;
  * seperti {@link Anime} dan {@link AnimeFilm}.
  * </p>
  *
- * <h2>Class Diagram (Inheritance)</h2>
+ * <p>
+ * Konsep OOP yang diterapkan:
+ * </p>
+ * <ul>
+ * <li><b>Abstraction</b> — class dideklarasikan sebagai {@code abstract},
+ *     memiliki method abstract yang wajib diimplementasikan oleh subclass</li>
+ * <li><b>Inheritance</b> — menjadi parent class dari {@link Anime} dan
+ *     {@link AnimeFilm}</li>
+ * <li><b>Encapsulation</b> — atribut menggunakan akses {@code private}
+ *     dengan getter dan setter</li>
+ * </ul>
+ *
+ * <h2>Class Diagram (Abstract Inheritance)</h2>
  * <pre>
- *         ┌──────────────────┐
- *         │      Media       │  ← Parent (Superclass)
- *         ├──────────────────┤
- *         │ - judul: String  │
- *         │ - genre: String  │
- *         │ - tahunRilis: int│
- *         │ - status: String │
- *         ├──────────────────┤
- *         │ + getInfo()      │
- *         │ + tampilkanDetail│
- *         └────────┬─────────┘
- *            ┌─────┴──────┐
- *    ┌───────┴──┐   ┌─────┴───────┐
- *    │  Anime   │   │  AnimeFilm  │  ← Child (Subclass)
- *    └──────────┘   └─────────────┘
+ *       ┌────────────────────────────────┐
+ *       │    «abstract» Media            │  ← Abstract Parent Class
+ *       ├────────────────────────────────┤
+ *       │ - judul: String               │
+ *       │ - genre: String               │
+ *       │ - tahunRilis: int             │
+ *       │ - status: String              │
+ *       ├────────────────────────────────┤
+ *       │ + getInfo(): String           │  (concrete)
+ *       │ + tampilkanDetail(): void     │  (concrete)
+ *       │ «abstract» getInfoLengkap()   │  → wajib diimplementasi
+ *       │ «abstract» hitungNilai()      │  → wajib diimplementasi
+ *       └───────────────┬────────────────┘
+ *               ┌───────┴────────┐
+ *       ┌───────┴──┐      ┌─────┴───────┐
+ *       │  Anime   │      │  AnimeFilm  │  ← Concrete Subclass
+ *       └──────────┘      └─────────────┘
  * </pre>
  *
  * @author Administrator
- * @version 1.0
+ * @version 2.0
  */
-public class Media {
+public abstract class Media {
 
     /** Judul dari media. */
     private String judul;
@@ -52,6 +73,8 @@ public class Media {
 
     /**
      * Constructor untuk membuat objek Media baru.
+     * Karena Media adalah abstract class, constructor ini hanya bisa
+     * dipanggil melalui {@code super()} dari constructor subclass.
      *
      * @param judul judul media
      * @param genre genre media
@@ -64,6 +87,40 @@ public class Media {
         this.tahunRilis = tahunRilis;
         this.status = status;
     }
+
+    // ===== Abstract Methods (wajib diimplementasi oleh subclass) =====
+
+    /**
+     * Method abstract yang mengembalikan informasi lengkap media dalam format
+     * String yang terstruktur. Setiap subclass wajib mengimplementasikan
+     * method ini sesuai dengan jenis media masing-masing.
+     *
+     * <p>
+     * Berbeda dengan {@link #getInfo()} yang hanya menampilkan ringkasan,
+     * method ini mengembalikan detail yang lebih komprehensif termasuk
+     * atribut-atribut khusus subclass.
+     * </p>
+     *
+     * @return String berisi informasi lengkap media yang sudah diformat
+     */
+    public abstract String getInfoLengkap();
+
+    /**
+     * Method abstract yang menghitung nilai/skor prioritas media.
+     * Setiap subclass wajib mengimplementasikan logika perhitungan
+     * yang sesuai dengan jenis media masing-masing.
+     *
+     * <p>
+     * Untuk Anime series, nilai bisa dihitung berdasarkan jumlah episode
+     * dan status tayang. Untuk AnimeFilm, nilai bisa dihitung berdasarkan
+     * durasi dan status rilis.
+     * </p>
+     *
+     * @return nilai prioritas media dalam bentuk double
+     */
+    public abstract double hitungNilai();
+
+    // ===== Concrete Methods (sudah memiliki implementasi) =====
 
     /**
      * Mengembalikan ringkasan informasi media dalam format String.
