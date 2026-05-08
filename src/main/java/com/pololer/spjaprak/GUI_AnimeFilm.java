@@ -4,28 +4,11 @@
  */
 package com.pololer.spjaprak;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * Class GUI_AnimeFilm merupakan class GUI berbasis Java Swing yang menyediakan
@@ -46,209 +29,39 @@ import javax.swing.table.DefaultTableModel;
  * @see AnimeFilm
  * @see Media
  */
-public class GUI_AnimeFilm extends JFrame {
+public class GUI_AnimeFilm extends javax.swing.JFrame {
 
     /** List untuk menyimpan data anime film. */
     private final ArrayList<AnimeFilm> listFilm = new ArrayList<>();
-
-    /** Field input judul film. */
-    private JTextField tfJudul;
-
-    /** Field input genre film. */
-    private JTextField tfGenre;
-
-    /** Field input tahun rilis film. */
-    private JTextField tfTahun;
-
-    /** Field input status film. */
-    private JTextField tfStatus;
-
-    /** Field input durasi film (menit). */
-    private JTextField tfDurasi;
-
-    /** Field input tanggal rilis film (DD-MM-YYYY). */
-    private JTextField tfTanggal;
-
-    /** Field input distributor film. */
-    private JTextField tfDistributor;
-
-    /** Tombol Tambah Film. */
-    private JButton btnTambah;
-
-    /** Tombol Hapus Film. */
-    private JButton btnHapus;
-
-    /** Tombol Simpan. */
-    private JButton btnSimpan;
-
-    /** Tombol Batal. */
-    private JButton btnBatal;
-
-    /** Tombol Close. */
-    private JButton btnClose;
-
-    /** Tabel untuk menampilkan data anime film. */
-    private JTable tableFilm;
-
+    
     /** Model tabel anime film. */
-    private DefaultTableModel modelFilm;
-
-    /** Label untuk menampilkan status tayang otomatis. */
-    private JLabel lblStatusTayang;
-
-    /** Label untuk menampilkan info dari getInfo(). */
-    private JLabel lblInfo;
+    private javax.swing.table.DefaultTableModel modelFilm;
 
     /**
      * Constructor GUI_AnimeFilm.
      * Menginisialisasi seluruh komponen GUI dan menampilkan JFrame.
      */
     public GUI_AnimeFilm() {
-        setTitle("SPJA — Kelola Anime Film");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(900, 600);
-        setLocationRelativeTo(null);
-
         initComponents();
-
-        setVisible(true);
-    }
-
-    /**
-     * Menginisialisasi semua komponen GUI pada frame.
-     */
-    private void initComponents() {
-        setLayout(new BorderLayout(10, 10));
-
-        // ===== PANEL FORM INPUT =====
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createTitledBorder("Input Data Anime Film"));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(4, 6, 4, 6);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        tfJudul = addFormField(formPanel, gbc, "Judul:", 0);
-        tfGenre = addFormField(formPanel, gbc, "Genre:", 1);
-        tfTahun = addFormField(formPanel, gbc, "Tahun Rilis:", 2);
-        tfStatus = addFormField(formPanel, gbc, "Status:", 3);
-        tfDurasi = addFormField(formPanel, gbc, "Durasi (menit):", 4);
-        tfTanggal = addFormField(formPanel, gbc, "Tanggal Rilis (DD-MM-YYYY):", 5);
-        tfDistributor = addFormField(formPanel, gbc, "Distributor:", 6);
-
-        // Label Status Tayang (otomatis update saat input tanggal)
-        lblStatusTayang = new JLabel("Status Tayang: -");
-        lblStatusTayang.setFont(lblStatusTayang.getFont().deriveFont(Font.BOLD));
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        formPanel.add(lblStatusTayang, gbc);
+        setLocationRelativeTo(null);
 
         // DocumentListener untuk auto-update status tayang
         tfTanggal.getDocument().addDocumentListener(new DocumentListener() {
-            /** Dipanggil saat teks di-insert. */
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateStatusTayang();
             }
 
-            /** Dipanggil saat teks dihapus. */
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateStatusTayang();
             }
 
-            /** Dipanggil saat atribut teks berubah. */
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateStatusTayang();
             }
         });
-
-        // Tombol Tambah Film
-        btnTambah = new JButton("Tambah Film");
-        btnTambah.addActionListener(e -> tambahFilm());
-        gbc.gridx = 0;
-        gbc.gridy = 8;
-        gbc.gridwidth = 2;
-        formPanel.add(btnTambah, gbc);
-
-        add(formPanel, BorderLayout.NORTH);
-
-        // ===== JTABLE =====
-        String[] kolom = { "Judul", "Genre", "Tahun", "Status", "Durasi",
-            "Tanggal Rilis", "Distributor" };
-        modelFilm = new DefaultTableModel(kolom, 0) {
-            /** Mencegah sel tabel diedit langsung oleh pengguna. */
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        tableFilm = new JTable(modelFilm);
-        JScrollPane scrollPane = new JScrollPane(tableFilm);
-
-        // ===== PANEL TOMBOL AKSI (Simpan, Hapus, Batal, Close) =====
-        JPanel buttonActionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        buttonActionPanel.setBorder(BorderFactory.createTitledBorder("Aksi"));
-
-        btnSimpan = new JButton("Simpan");
-        btnSimpan.addActionListener(e -> simpanData());
-        buttonActionPanel.add(btnSimpan);
-
-        btnHapus = new JButton("Hapus");
-        btnHapus.addActionListener(e -> hapusFilm());
-        buttonActionPanel.add(btnHapus);
-
-        btnBatal = new JButton("Batal");
-        btnBatal.addActionListener(e -> clearFields());
-        buttonActionPanel.add(btnBatal);
-
-        btnClose = new JButton("Close");
-        btnClose.addActionListener(e -> dispose());
-        buttonActionPanel.add(btnClose);
-
-        // ===== PANEL WRAPPER (Tabel + Tombol Aksi) =====
-        JPanel centerWrapperPanel = new JPanel(new BorderLayout(5, 5));
-        centerWrapperPanel.add(scrollPane, BorderLayout.CENTER);
-        centerWrapperPanel.add(buttonActionPanel, BorderLayout.SOUTH);
-        add(centerWrapperPanel, BorderLayout.CENTER);
-
-        // ===== PANEL BAWAH (Info) =====
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        bottomPanel.setBorder(BorderFactory.createTitledBorder("Info Film (getInfo)"));
-        JButton btnInfo = new JButton("Tampilkan Info");
-        btnInfo.addActionListener(e -> tampilkanInfo());
-        lblInfo = new JLabel("Pilih film dari tabel, lalu klik Tampilkan Info.");
-        bottomPanel.add(btnInfo);
-        bottomPanel.add(Box.createHorizontalStrut(10));
-        bottomPanel.add(lblInfo);
-        add(bottomPanel, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Menambahkan field form (JLabel + JTextField) ke panel dengan
-     * GridBagLayout.
-     *
-     * @param panel panel tujuan
-     * @param gbc GridBagConstraints yang digunakan
-     * @param label teks label
-     * @param row baris posisi
-     * @return JTextField yang dibuat
-     */
-    private JTextField addFormField(JPanel panel, GridBagConstraints gbc,
-            String label, int row) {
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.weightx = 0.0;
-        panel.add(new JLabel(label), gbc);
-
-        JTextField tf = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.weightx = 1.0;
-        panel.add(tf, gbc);
-
-        return tf;
     }
 
     /**
@@ -275,10 +88,260 @@ public class GUI_AnimeFilm extends JFrame {
     }
 
     /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        formPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tfJudul = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tfGenre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        tfTahun = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        tfStatus = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        tfDurasi = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        tfTanggal = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        tfDistributor = new javax.swing.JTextField();
+        lblStatusTayang = new javax.swing.JLabel();
+        btnTambah = new javax.swing.JButton();
+        centerWrapperPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        String[] kolom = { "Judul", "Genre", "Tahun", "Status", "Durasi", "Tanggal Rilis", "Distributor" };
+        modelFilm = new javax.swing.table.DefaultTableModel(kolom, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tableFilm = new javax.swing.JTable();
+        buttonActionPanel = new javax.swing.JPanel();
+        btnSimpan = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnBatal = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
+        bottomPanel = new javax.swing.JPanel();
+        btnInfo = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        lblInfo = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SPJA — Kelola Anime Film");
+
+        formPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Input Data Anime Film"));
+        formPanel.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Judul:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfJudul, gridBagConstraints);
+
+        jLabel2.setText("Genre:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfGenre, gridBagConstraints);
+
+        jLabel3.setText("Tahun Rilis:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfTahun, gridBagConstraints);
+
+        jLabel4.setText("Status:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfStatus, gridBagConstraints);
+
+        jLabel5.setText("Durasi (menit):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfDurasi, gridBagConstraints);
+
+        jLabel6.setText("Tanggal Rilis (DD-MM-YYYY):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel6, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfTanggal, gridBagConstraints);
+
+        jLabel7.setText("Distributor:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(jLabel7, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(tfDistributor, gridBagConstraints);
+
+        lblStatusTayang.setFont(lblStatusTayang.getFont().deriveFont(lblStatusTayang.getFont().getStyle() | java.awt.Font.BOLD));
+        lblStatusTayang.setText("Status Tayang: -");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(lblStatusTayang, gridBagConstraints);
+
+        btnTambah.setText("Tambah Film");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 6, 4, 6);
+        formPanel.add(btnTambah, gridBagConstraints);
+
+        getContentPane().add(formPanel, java.awt.BorderLayout.NORTH);
+
+        centerWrapperPanel.setLayout(new java.awt.BorderLayout(5, 5));
+
+        tableFilm.setModel(modelFilm);
+        jScrollPane1.setViewportView(tableFilm);
+
+        centerWrapperPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        buttonActionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Aksi"));
+        buttonActionPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+
+        btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
+        buttonActionPanel.add(btnSimpan);
+
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
+        buttonActionPanel.add(btnHapus);
+
+        btnBatal.setText("Batal");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
+        buttonActionPanel.add(btnBatal);
+
+        btnClose.setText("Close");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        buttonActionPanel.add(btnClose);
+
+        centerWrapperPanel.add(buttonActionPanel, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(centerWrapperPanel, java.awt.BorderLayout.CENTER);
+
+        bottomPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Info Film (getInfo)"));
+        bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnInfo.setText("Tampilkan Info");
+        btnInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInfoActionPerformed(evt);
+            }
+        });
+        bottomPanel.add(btnInfo);
+        bottomPanel.add(filler2);
+
+        lblInfo.setText("Pilih film dari tabel, lalu klik Tampilkan Info.");
+        bottomPanel.add(lblInfo);
+
+        getContentPane().add(bottomPanel, java.awt.BorderLayout.SOUTH);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
      * Aksi tombol "Tambah Film". Memvalidasi input, membuat objek
      * {@link AnimeFilm}, menyimpan ke list, dan menampilkan di JTable.
      */
-    private void tambahFilm() {
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         String judul = tfJudul.getText().trim();
         String genre = tfGenre.getText().trim();
         String sTahun = tfTahun.getText().trim();
@@ -334,28 +397,9 @@ public class GUI_AnimeFilm extends JFrame {
         JOptionPane.showMessageDialog(this,
                 "Film \"" + judul + "\" berhasil ditambahkan!",
                 "Sukses", JOptionPane.INFORMATION_MESSAGE);
-    }
+    }//GEN-LAST:event_btnTambahActionPerformed
 
-    /**
-     * Membersihkan semua field input.
-     */
-    private void clearFields() {
-        tfJudul.setText("");
-        tfGenre.setText("");
-        tfTahun.setText("");
-        tfStatus.setText("");
-        tfDurasi.setText("");
-        tfTanggal.setText("");
-        tfDistributor.setText("");
-        lblStatusTayang.setText("Status Tayang: -");
-        lblStatusTayang.setForeground(Color.BLACK);
-    }
-
-    /**
-     * Aksi tombol "Simpan". Menyimpan data dari list ke konsol dan menampilkan
-     * pesan bahwa data telah disimpan.
-     */
-    private void simpanData() {
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         if (listFilm.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Tidak ada data untuk disimpan!",
@@ -374,12 +418,9 @@ public class GUI_AnimeFilm extends JFrame {
                 "Data disimpan! Total: " + listFilm.size() + " film.\n"
                 + "Lihat console untuk detail.",
                 "Simpan Berhasil", JOptionPane.INFORMATION_MESSAGE);
-    }
+    }//GEN-LAST:event_btnSimpanActionPerformed
 
-    /**
-     * Aksi tombol "Hapus". Menghapus film yang dipilih dari tabel dan list.
-     */
-    private void hapusFilm() {
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int selectedRow = tableFilm.getSelectedRow();
         if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this,
@@ -400,14 +441,17 @@ public class GUI_AnimeFilm extends JFrame {
                     "Film \"" + judul + "\" berhasil dihapus!",
                     "Sukses", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
+    }//GEN-LAST:event_btnHapusActionPerformed
 
-    /**
-     * Aksi tombol "Tampilkan Info". Menampilkan hasil method
-     * {@code getInfo()} dari objek AnimeFilm yang dipilih di JTable, serta
-     * memanggil {@code tampilkanDetail()} ke konsol.
-     */
-    private void tampilkanInfo() {
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        clearFields();
+    }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
         int selectedRow = tableFilm.getSelectedRow();
         if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this,
@@ -421,14 +465,64 @@ public class GUI_AnimeFilm extends JFrame {
 
         // Juga cetak ke konsol menggunakan tampilkanDetail()
         film.tampilkanDetail();
+    }//GEN-LAST:event_btnInfoActionPerformed
+
+    /**
+     * Membersihkan semua field input.
+     */
+    private void clearFields() {
+        tfJudul.setText("");
+        tfGenre.setText("");
+        tfTahun.setText("");
+        tfStatus.setText("");
+        tfDurasi.setText("");
+        tfTanggal.setText("");
+        tfDistributor.setText("");
+        lblStatusTayang.setText("Status Tayang: -");
+        lblStatusTayang.setForeground(Color.BLACK);
     }
 
     /**
-     * Method main untuk menjalankan GUI AnimeFilm secara standalone.
-     *
-     * @param args argumen command line (tidak digunakan)
+     * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GUI_AnimeFilm());
+    public static void main(String args[]) {
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GUI_AnimeFilm().setVisible(true);
+            }
+        });
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel bottomPanel;
+    private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnInfo;
+    private javax.swing.JButton btnSimpan;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JPanel buttonActionPanel;
+    private javax.swing.JPanel centerWrapperPanel;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.JPanel formPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblInfo;
+    private javax.swing.JLabel lblStatusTayang;
+    private javax.swing.JTable tableFilm;
+    private javax.swing.JTextField tfDistributor;
+    private javax.swing.JTextField tfDurasi;
+    private javax.swing.JTextField tfGenre;
+    private javax.swing.JTextField tfJudul;
+    private javax.swing.JTextField tfStatus;
+    private javax.swing.JTextField tfTahun;
+    private javax.swing.JTextField tfTanggal;
+    // End of variables declaration//GEN-END:variables
 }

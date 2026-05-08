@@ -16,11 +16,11 @@ globs:
 | `model`  | TableModel    | `modelAnime`     |
 
 ## GUI Class Pattern
-Every GUI class must follow this structure:
+Every GUI class must follow this structure and be fully compatible with the NetBeans GUI Designer:
 1. **Extend `JFrame`** — each GUI is a standalone window.
 2. **Constructor** — set title, size, close operation, call `initComponents()`, then `setVisible(true)`.
-3. **`initComponents()`** — build all UI components (form panel, table, bottom panel).
-4. **`addFormField(JPanel, GridBagConstraints, String, int)`** — helper to add a label + text field row.
+3. **`initComponents()`** — build all UI components inside the auto-generated NetBeans block (`//GEN-BEGIN:initComponents`). Do NOT hand-code layout here.
+4. **`.form` File (XML)** — Every GUI class MUST have a corresponding `.form` XML file so that it can be opened in the NetBeans "Design" tab.
 5. **`clearFields()`** — reset all text fields to empty.
 6. **`main(String[])`** — standalone launcher using `SwingUtilities.invokeLater()`.
 
