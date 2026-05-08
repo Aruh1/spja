@@ -1,7 +1,6 @@
 ---
+trigger: always_on
 description: Documentation standards for SPJA project markdown files
-globs:
-  - "*.md"
 ---
 
 # Documentation Standards
@@ -15,13 +14,13 @@ Use this format for documenting GUI component properties:
 ```markdown
 |  No   | Nama Komponen     | Properti      | Value             |
 | :---: | :---------------- | :------------ | :---------------- |
-|   1   | `JLabel` (anonim) | Text          | Judul:            |
-|   2   | `tfJudul`         | Name<br>Text  | tfJudul<br>*(kosong)* |
+|   1   | `JLabel1`         | Text          | Judul:            |
+|   2   | `jTextField1`     | Name<br>Text  | tfJudul<br>*(kosong)* |
 ```
 
 ### Rules:
-- Anonymous labels → `JLabel (anonim)`
-- Named components → backtick-quoted name (e.g., `` `tfJudul` ``)
+- Anonymous labels → `JLabel` followed by number (e.g., `JLabel1`)
+- Text fields → `jTextField` followed by number (e.g., `jTextField1`)
 - Multi-value properties → separated with `<br>`
 - Empty text fields → `*(kosong)*`
 - JTable model → list column names in `[brackets]`
