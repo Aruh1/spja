@@ -28,85 +28,79 @@ public class Spjaprak extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         lblTitle = new javax.swing.JLabel();
-        btnAnime = new javax.swing.JButton();
-        btnFilm = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuHome = new javax.swing.JMenu();
+        menuItemExit = new javax.swing.JMenuItem();
+        menuForm = new javax.swing.JMenu();
+        menuItemAnime = new javax.swing.JMenuItem();
+        menuItemFilm = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SPJA — Sistem Penjadwalan Tayang Anime");
-        setResizable(false);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        lblTitle.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblTitle.setFont(lblTitle.getFont().deriveFont(lblTitle.getFont().getStyle() | java.awt.Font.BOLD, lblTitle.getFont().getSize()+6));
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("Sistem Penjadwalan Tayang Anime");
+        lblTitle.setText("Menu Program");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(lblTitle, gridBagConstraints);
 
-        btnAnime.setText("Kelola Anime Series");
-        btnAnime.addActionListener(new java.awt.event.ActionListener() {
+        menuHome.setText("Home");
+
+        menuItemExit.setText("Keluar");
+        menuItemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnimeActionPerformed(evt);
+                menuItemExitActionPerformed(evt);
             }
         });
+        menuHome.add(menuItemExit);
 
-        btnFilm.setText("Kelola Anime Film");
-        btnFilm.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuHome);
+
+        menuForm.setText("Menu");
+
+        menuItemAnime.setText("Kelola Anime Series");
+        menuItemAnime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFilmActionPerformed(evt);
+                menuItemAnimeActionPerformed(evt);
             }
         });
+        menuForm.add(menuItemAnime);
 
-        btnExit.setText("Keluar");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
+        menuItemFilm.setText("Kelola Anime Film");
+        menuItemFilm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
+                menuItemFilmActionPerformed(evt);
             }
         });
+        menuForm.add(menuItemFilm);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAnime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnFilm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(80, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(lblTitle)
-                .addGap(40, 40, 40)
-                .addComponent(btnAnime, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
+        jMenuBar1.add(menuForm);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnimeActionPerformed
-        new GUI_Anime().setVisible(true);
-    }//GEN-LAST:event_btnAnimeActionPerformed
-
-    private void btnFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilmActionPerformed
-        new GUI_AnimeFilm().setVisible(true);
-    }//GEN-LAST:event_btnFilmActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+    private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemExitActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
+    }//GEN-LAST:event_menuItemExitActionPerformed
+
+    private void menuItemAnimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAnimeActionPerformed
+        new GUI_Anime().setVisible(true);
+    }//GEN-LAST:event_menuItemAnimeActionPerformed
+
+    private void menuItemFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFilmActionPerformed
+        new GUI_AnimeFilm().setVisible(true);
+    }//GEN-LAST:event_menuItemFilmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,9 +115,12 @@ public class Spjaprak extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAnime;
-    private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnFilm;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JMenu menuForm;
+    private javax.swing.JMenu menuHome;
+    private javax.swing.JMenuItem menuItemAnime;
+    private javax.swing.JMenuItem menuItemExit;
+    private javax.swing.JMenuItem menuItemFilm;
     // End of variables declaration//GEN-END:variables
 }

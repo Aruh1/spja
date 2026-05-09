@@ -74,13 +74,6 @@ public class GUI_Anime extends javax.swing.JFrame {
         btnTambah = new javax.swing.JButton();
         centerWrapperPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        String[] kolom = { "Judul", "Genre", "Tahun", "Status", "Studio", "Episode", "Musim", "Hari Tayang" };
-        modelAnime = new javax.swing.table.DefaultTableModel(kolom, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
         tableAnime = new javax.swing.JTable();
         buttonActionPanel = new javax.swing.JPanel();
         btnSimpan = new javax.swing.JButton();
@@ -99,6 +92,7 @@ public class GUI_Anime extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SPJA — Kelola Anime Series");
+        getContentPane().setLayout(new java.awt.BorderLayout(10, 10));
 
         formPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Input Data Anime Series"));
         formPanel.setLayout(new java.awt.GridBagLayout());
@@ -241,6 +235,13 @@ public class GUI_Anime extends javax.swing.JFrame {
 
         centerWrapperPanel.setLayout(new java.awt.BorderLayout(5, 5));
 
+        String[] kolom = { "Judul", "Genre", "Tahun", "Status", "Studio", "Episode", "Musim", "Hari Tayang" };
+        modelAnime = new javax.swing.table.DefaultTableModel(kolom, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tableAnime.setModel(modelAnime);
         jScrollPane1.setViewportView(tableAnime);
 
@@ -326,6 +327,7 @@ public class GUI_Anime extends javax.swing.JFrame {
         getContentPane().add(bottomPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
