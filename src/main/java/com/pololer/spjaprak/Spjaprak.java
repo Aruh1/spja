@@ -106,6 +106,15 @@ public class Spjaprak extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        // Implementasi Exception Handling secara global untuk menangkap unhandled exception
+        // dan menampilkannya dalam bentuk pop-up
+        Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Terjadi exception yang tidak terduga:\n" + e.getMessage(),
+                    "System Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        });
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

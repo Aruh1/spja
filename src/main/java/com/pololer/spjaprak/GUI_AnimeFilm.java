@@ -352,53 +352,59 @@ public class GUI_AnimeFilm extends javax.swing.JFrame {
         String tanggal = tfTanggal.getText().trim();
         String distro = tfDistributor.getText().trim();
 
-        // Validasi: cek field tidak kosong
-        if (judul.isEmpty() || genre.isEmpty() || sTahun.isEmpty()
-                || status.isEmpty() || sDurasi.isEmpty() || tanggal.isEmpty()
-                || distro.isEmpty()) {
+        try {
+            // Validasi: cek field tidak kosong
+            if (judul.isEmpty() || genre.isEmpty() || sTahun.isEmpty()
+                    || status.isEmpty() || sDurasi.isEmpty() || tanggal.isEmpty()
+                    || distro.isEmpty()) {
+                throw new IllegalArgumentException("Semua field harus diisi!");
+            }
+
+            // Validasi: tahun rilis harus angka
+            int tahun;
+            try {
+                tahun = Integer.parseInt(sTahun);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException("Tahun Rilis harus berupa angka!");
+            }
+
+            // Validasi: durasi harus angka
+            int durasi;
+            try {
+                durasi = Integer.parseInt(sDurasi);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException("Durasi (menit) harus berupa angka!");
+            }
+
+            // Buat objek AnimeFilm (child dari Media) dan simpan
+            AnimeFilm film = new AnimeFilm(judul, genre, tahun, status, durasi, tanggal, distro);
+            listFilm.add(film);
+
+            // Tambahkan ke tabel (durasi ditampilkan dalam format "Xj Ym")
+            modelFilm.addRow(new Object[] {
+                judul, genre, tahun, status, film.getFormatDurasi(), tanggal, distro
+            });
+
+            // Reset fields
+            clearFields();
+
             JOptionPane.showMessageDialog(this,
-                    "Semua field harus diisi!",
+                    "Film \"" + judul + "\" berhasil ditambahkan!",
+                    "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
                     "Validasi Input", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Validasi: tahun rilis harus angka
-        int tahun;
-        try {
-            tahun = Integer.parseInt(sTahun);
-        } catch (NumberFormatException ex) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Tahun Rilis harus berupa angka!",
-                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
-            return;
+                    "Terjadi exception: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Validasi: durasi harus angka
-        int durasi;
-        try {
-            durasi = Integer.parseInt(sDurasi);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Durasi (menit) harus berupa angka!",
-                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Buat objek AnimeFilm (child dari Media) dan simpan
-        AnimeFilm film = new AnimeFilm(judul, genre, tahun, status, durasi, tanggal, distro);
-        listFilm.add(film);
-
-        // Tambahkan ke tabel (durasi ditampilkan dalam format "Xj Ym")
-        modelFilm.addRow(new Object[] {
-            judul, genre, tahun, status, film.getFormatDurasi(), tanggal, distro
-        });
-
-        // Reset fields
-        clearFields();
-
-        JOptionPane.showMessageDialog(this,
-                "Film \"" + judul + "\" berhasil ditambahkan!",
-                "Sukses", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed

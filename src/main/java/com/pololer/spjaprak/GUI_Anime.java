@@ -344,53 +344,59 @@ public class GUI_Anime extends javax.swing.JFrame {
         String musim = tfMusim.getText().trim();
         String hari = tfHari.getText().trim();
 
-        // Validasi: cek field tidak kosong
-        if (judul.isEmpty() || genre.isEmpty() || sTahun.isEmpty()
-                || status.isEmpty() || studio.isEmpty() || sEps.isEmpty()
-                || musim.isEmpty() || hari.isEmpty()) {
+        try {
+            // Validasi: cek field tidak kosong
+            if (judul.isEmpty() || genre.isEmpty() || sTahun.isEmpty()
+                    || status.isEmpty() || studio.isEmpty() || sEps.isEmpty()
+                    || musim.isEmpty() || hari.isEmpty()) {
+                throw new IllegalArgumentException("Semua field harus diisi!");
+            }
+
+            // Validasi: tahun rilis harus angka
+            int tahun;
+            try {
+                tahun = Integer.parseInt(sTahun);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException("Tahun Rilis harus berupa angka!");
+            }
+
+            // Validasi: total episode harus angka
+            int totalEp;
+            try {
+                totalEp = Integer.parseInt(sEps);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException("Total Episode harus berupa angka!");
+            }
+
+            // Buat objek Anime (child dari Media) dan simpan
+            Anime anime = new Anime(judul, genre, tahun, status, studio, totalEp, musim, hari);
+            listAnime.add(anime);
+
+            // Tambahkan ke tabel
+            modelAnime.addRow(new Object[] {
+                judul, genre, tahun, status, studio, totalEp, musim, hari
+            });
+
+            // Reset fields
+            clearFields();
+
             JOptionPane.showMessageDialog(this,
-                    "Semua field harus diisi!",
+                    "Anime \"" + judul + "\" berhasil ditambahkan!",
+                    "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
                     "Validasi Input", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Validasi: tahun rilis harus angka
-        int tahun;
-        try {
-            tahun = Integer.parseInt(sTahun);
-        } catch (NumberFormatException ex) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Tahun Rilis harus berupa angka!",
-                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
-            return;
+                    "Terjadi exception: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Validasi: total episode harus angka
-        int totalEp;
-        try {
-            totalEp = Integer.parseInt(sEps);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Total Episode harus berupa angka!",
-                    "Validasi Input", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Buat objek Anime (child dari Media) dan simpan
-        Anime anime = new Anime(judul, genre, tahun, status, studio, totalEp, musim, hari);
-        listAnime.add(anime);
-
-        // Tambahkan ke tabel
-        modelAnime.addRow(new Object[] {
-            judul, genre, tahun, status, studio, totalEp, musim, hari
-        });
-
-        // Reset fields
-        clearFields();
-
-        JOptionPane.showMessageDialog(this,
-                "Anime \"" + judul + "\" berhasil ditambahkan!",
-                "Sukses", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -454,30 +460,46 @@ public class GUI_Anime extends javax.swing.JFrame {
             return;
         }
 
-        String input = JOptionPane.showInputDialog(this,
-                "Masukkan episode saat ini untuk \""
-                + listAnime.get(selectedRow).getJudul() + "\":");
-
-        if (input == null || input.trim().isEmpty()) {
-            return;
-        }
-
-        int epSaatIni;
         try {
-            epSaatIni = Integer.parseInt(input.trim());
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Input harus berupa angka!",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            String input = JOptionPane.showInputDialog(this,
+                    "Masukkan episode saat ini untuk \""
+                    + listAnime.get(selectedRow).getJudul() + "\":");
 
-        Anime anime = listAnime.get(selectedRow);
-        double progress = anime.getProgressTayang(epSaatIni);
-        lblProgress.setText(String.format("Progress: %.1f%% (%d / %d episode)",
-                progress, epSaatIni, anime.getTotalEpisode()));
-        lblProgress.setForeground(progress >= 100.0
-                ? new Color(0, 128, 0) : new Color(0, 0, 180));
+            if (input == null || input.trim().isEmpty()) {
+                return;
+            }
+
+            int epSaatIni;
+            try {
+                epSaatIni = Integer.parseInt(input.trim());
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException("Input harus berupa angka bulat!");
+            }
+
+            Anime anime = listAnime.get(selectedRow);
+            if (epSaatIni < 0 || epSaatIni > anime.getTotalEpisode()) {
+                throw new IllegalArgumentException("Episode tidak valid! Masukkan angka 0 - " + anime.getTotalEpisode());
+            }
+
+            double progress = anime.getProgressTayang(epSaatIni);
+            lblProgress.setText(String.format("Progress: %.1f%% (%d / %d episode)",
+                    progress, epSaatIni, anime.getTotalEpisode()));
+            lblProgress.setForeground(progress >= 100.0
+                    ? new Color(0, 128, 0) : new Color(0, 0, 180));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validasi Input", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Terjadi exception: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnProgressActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
