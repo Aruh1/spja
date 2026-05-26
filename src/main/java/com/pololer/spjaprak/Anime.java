@@ -354,4 +354,221 @@ public class Anime extends Media {
     public void setHariTayang(String hariTayang) {
         this.hariTayang = hariTayang;
     }
+
+    // ===== Implementasi Interface Calculable (Override) =====
+
+    /**
+     * Override method {@code hitungProgress()} dari interface {@link Calculable}.
+     * Menghitung persentase progress default untuk anime (0.0).
+     * Untuk perhitungan guna episode spesifik, gunakan {@link #getProgressTayang(int)}.
+     *
+     * @return persentase progress (default 0.0)
+     */
+    @Override
+    public double hitungProgress() {
+        // Mengembalikan 0 karena progress anime bergantung pada episode saat ini
+        // yang tidak disimpan sebagai atribut. Gunakan getProgressTayang(episodeSaatIni) untuk nilai actual.
+        return 0.0;
+    }
+
+    // ===== Implementasi Interface Editable (Override) =====
+
+    /**
+     * Override method {@code reset()} dari interface {@link Editable}.
+     * Reset semua atribut anime ke nilai default (null atau 0).
+     */
+    @Override
+    public void reset() {
+        // Reset atribut parent class
+        super.reset();
+
+        // Reset atribut khusus Anime
+        this.studio = null;
+        this.totalEpisode = 0;
+        this.musim = null;
+        this.hariTayang = null;
+    }
+
+    /**
+     * Override method {@code isValid()} dari interface {@link Editable}.
+     * Memeriksa validitas semua atribut anime termasuk atribut parent.
+     *
+     * <p>
+     * Validasi tambahan untuk Anime:
+     * </p>
+     * <ul>
+     * <li>Studio tidak null dan tidak kosong</li>
+     * <li>Total episode > 0</li>
+     * <li>Musim tidak null dan tidak kosong</li>
+     * <li>Hari tayang tidak null dan tidak kosong</li>
+     * </ul>
+     *
+     * @return true jika semua atribut valid, false sebaliknya
+     */
+    @Override
+    public boolean isValid() {
+        // Validasi parent class terlebih dahulu
+        if (!super.isValid()) {
+            return false;
+        }
+
+        // Validasi studio
+        if (studio == null || studio.trim().isEmpty()) {
+            return false;
+        }
+
+        // Validasi total episode
+        if (totalEpisode <= 0) {
+            return false;
+        }
+
+        // Validasi musim
+        if (musim == null || musim.trim().isEmpty()) {
+            return false;
+        }
+
+        // Validasi hari tayang
+        if (hariTayang == null || hariTayang.trim().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // ===== Implementasi Interface Serialisable (Override) =====
+
+    /**
+     * Override method {@code toCSV()} dari interface {@link Serialisable}.
+     * Mengkonversi anime ke format CSV dengan semua atribut.
+     *
+     * @return String data anime dalam format CSV
+     */
+    @Override
+    public String toCSV() {
+        return "\"" + getJudul() + "\",\"" + getGenre() + "\",\"" + getTahunRilis()
+                + "\",\"" + getStatus() + "\",\"" + studio + "\",\"" + totalEpisode
+                + "\",\"" + musim + "\",\"" + hariTayang + "\"";
+    }
+
+    /**
+     * Override method {@code toJSON()} dari interface {@link Serialisable}.
+     * Mengkonversi anime ke format JSON dengan semua atribut.
+     *
+     * @return String data anime dalam format JSON
+     */
+    @Override
+    public String toJSON() {
+        return "{\"judul\":\"" + getJudul() + "\",\"genre\":\"" + getGenre()
+                + "\",\"tahunRilis\":" + getTahunRilis() + ",\"status\":\"" + getStatus()
+                + "\",\"studio\":\"" + studio + "\",\"totalEpisode\":" + totalEpisode
+                + ",\"musim\":\"" + musim + "\",\"hariTayang\":\"" + hariTayang + "\"}";
+    }
+
+    /**
+     * Override method {@code toXML()} dari interface {@link Serialisable}.
+     * Mengkonversi anime ke format XML dengan semua atribut.
+     *
+     * @return String data anime dalam format XML
+     */
+    @Override
+    public String toXML() {
+        return "<anime>\n"
+                + "  <judul>" + getJudul() + "</judul>\n"
+                + "  <genre>" + getGenre() + "</genre>\n"
+                + "  <tahunRilis>" + getTahunRilis() + "</tahunRilis>\n"
+                + "  <status>" + getStatus() + "</status>\n"
+                + "  <studio>" + studio + "</studio>\n"
+                + "  <totalEpisode>" + totalEpisode + "</totalEpisode>\n"
+                + "  <musim>" + musim + "</musim>\n"
+                + "  <hariTayang>" + hariTayang + "</hariTayang>\n"
+                + "</anime>";
+    }
+
+    /**
+     * Override method {@code toFormattedString()} dari interface {@link Serialisable}.
+     * Mengkonversi anime ke String terformat yang sama dengan {@link #getInfoLengkap()}.
+     *
+     * @return String data anime dalam format terformat
+     */
+    @Override
+    public String toFormattedString() {
+        return getInfoLengkap();
+    }
+
+    /**
+     * Override method {@code fromCSV()} dari interface {@link Serialisable}.
+     * Mengonversi string CSV ke dalam objek anime (update).
+     *
+     * @param csvString string dalam format CSV
+     * @throws IllegalArgumentException jika format CSV tidak valid
+     */
+    @Override
+    public void fromCSV(String csvString) {
+        // Parsing CSV: "judul","genre","tahunRilis","status","studio","totalEpisode","musim","hariTayang"
+        String[] parts = csvString.split("\",\"");
+        if (parts.length != 8) {
+            throw new IllegalArgumentException("Format CSV Anime tidak valid. Diharapkan 8 field.");
+        }
+
+        try {
+            // Gunakan parent method untuk basic fields
+            StringBuilder baseCsv = new StringBuilder();
+            baseCsv.append(parts[0]).append("\",\"")
+                    .append(parts[1]).append("\",\"")
+                    .append(parts[2]).append("\",\"")
+                    .append(parts[3]).append("\"");
+            super.fromCSV(baseCsv.toString());
+
+            // Parse atribut khusus Anime
+            this.studio = parts[4].replaceAll("^\"|\"$", "");
+            this.totalEpisode = Integer.parseInt(parts[5].replaceAll("^\"|\"$", ""));
+            this.musim = parts[6].replaceAll("^\"|\"$", "");
+            this.hariTayang = parts[7].replaceAll("^\"|\"$", "");
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Format data tidak valid: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Override method {@code fromJSON()} dari interface {@link Serialisable}.
+     * Mengonversi string JSON ke dalam objek anime (update).
+     *
+     * @param jsonString string dalam format JSON
+     * @throws IllegalArgumentException jika format JSON tidak valid
+     */
+    @Override
+    public void fromJSON(String jsonString) {
+        try {
+            // Parse tipe dasar menggunakan parent method terlebih dahulu
+            // Extract hanya basic fields untuk parent
+            int studioStart = jsonString.indexOf("\"studio\":");
+            String basicJson = jsonString.substring(0, studioStart) + "}";
+            super.fromJSON(basicJson);
+
+            // Extract studio
+            int studioFieldStart = jsonString.indexOf("\"studio\":\"") + 9;
+            int studioFieldEnd = jsonString.indexOf("\"", studioFieldStart);
+            this.studio = jsonString.substring(studioFieldStart, studioFieldEnd);
+
+            // Extract totalEpisode
+            int episodeStart = jsonString.indexOf("\"totalEpisode\":") + 15;
+            int episodeEnd = jsonString.indexOf(",", episodeStart);
+            if (episodeEnd == -1) {
+                episodeEnd = jsonString.indexOf("}", episodeStart);
+            }
+            this.totalEpisode = Integer.parseInt(jsonString.substring(episodeStart, episodeEnd).trim());
+
+            // Extract musim
+            int musimStart = jsonString.indexOf("\"musim\":\"") + 8;
+            int musimEnd = jsonString.indexOf("\"", musimStart);
+            this.musim = jsonString.substring(musimStart, musimEnd);
+
+            // Extract hariTayang
+            int hariStart = jsonString.indexOf("\"hariTayang\":\"") + 13;
+            int hariEnd = jsonString.indexOf("\"", hariStart);
+            this.hariTayang = jsonString.substring(hariStart, hariEnd);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Format JSON Anime tidak valid: " + e.getMessage());
+        }
+    }
 }

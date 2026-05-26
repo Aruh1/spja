@@ -394,4 +394,214 @@ public class AnimeFilm extends Media {
     public void setDistributor(String distributor) {
         this.distributor = distributor;
     }
+
+    // ===== Implementasi Interface Calculable (Override) =====
+
+    /**
+     * Override method {@code hitungProgress()} dari interface {@link Calculable}.
+     * Menghitung persentase progress film berdasarkan tingkat tayang.
+     *
+     * <p>
+     * Logika: Jika film sudah tayang, return 100.0. Jika belum, return 0.0.
+     * </p>
+     *
+     * @return persentase progress (0.0 jika belum tayang, 100.0 jika sudah tayang)
+     */
+    @Override
+    public double hitungProgress() {
+        return sudahTayang() ? 100.0 : 0.0;
+    }
+
+    // ===== Implementasi Interface Editable (Override) =====
+
+    /**
+     * Override method {@code reset()} dari interface {@link Editable}.
+     * Reset semua atribut film anime ke nilai default (null atau 0).
+     */
+    @Override
+    public void reset() {
+        // Reset atribut parent class
+        super.reset();
+
+        // Reset atribut khusus AnimeFilm
+        this.durasiMenit = 0;
+        this.tanggalRilis = null;
+        this.distributor = null;
+    }
+
+    /**
+     * Override method {@code isValid()} dari interface {@link Editable}.
+     * Memeriksa validitas semua atribut film anime termasuk atribut parent.
+     *
+     * <p>
+     * Validasi tambahan untuk AnimeFilm:
+     * </p>
+     * <ul>
+     * <li>Durasi menit > 0</li>
+     * <li>Tanggal rilis tidak null dan format valid (DD-MM-YYYY)</li>
+     * <li>Distributor tidak null dan tidak kosong</li>
+     * </ul>
+     *
+     * @return true jika semua atribut valid, false sebaliknya
+     */
+    @Override
+    public boolean isValid() {
+        // Validasi parent class terlebih dahulu
+        if (!super.isValid()) {
+            return false;
+        }
+
+        // Validasi durasi
+        if (durasiMenit <= 0) {
+            return false;
+        }
+
+        // Validasi tanggal rilis (format DD-MM-YYYY)
+        if (tanggalRilis == null || tanggalRilis.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            LocalDate.parse(tanggalRilis, FORMATTER);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+
+        // Validasi distributor
+        if (distributor == null || distributor.trim().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // ===== Implementasi Interface Serialisable (Override) =====
+
+    /**
+     * Override method {@code toCSV()} dari interface {@link Serialisable}.
+     * Mengkonversi film anime ke format CSV dengan semua atribut.
+     *
+     * @return String data film anime dalam format CSV
+     */
+    @Override
+    public String toCSV() {
+        return "\"" + getJudul() + "\",\"" + getGenre() + "\",\"" + getTahunRilis()
+                + "\",\"" + getStatus() + "\",\"" + durasiMenit + "\",\"" + tanggalRilis
+                + "\",\"" + distributor + "\"";
+    }
+
+    /**
+     * Override method {@code toJSON()} dari interface {@link Serialisable}.
+     * Mengkonversi film anime ke format JSON dengan semua atribut.
+     *
+     * @return String data film anime dalam format JSON
+     */
+    @Override
+    public String toJSON() {
+        return "{\"judul\":\"" + getJudul() + "\",\"genre\":\"" + getGenre()
+                + "\",\"tahunRilis\":" + getTahunRilis() + ",\"status\":\"" + getStatus()
+                + "\",\"durasiMenit\":" + durasiMenit + ",\"tanggalRilis\":\"" + tanggalRilis
+                + "\",\"distributor\":\"" + distributor + "\"}";
+    }
+
+    /**
+     * Override method {@code toXML()} dari interface {@link Serialisable}.
+     * Mengkonversi film anime ke format XML dengan semua atribut.
+     *
+     * @return String data film anime dalam format XML
+     */
+    @Override
+    public String toXML() {
+        return "<animeFilm>\n"
+                + "  <judul>" + getJudul() + "</judul>\n"
+                + "  <genre>" + getGenre() + "</genre>\n"
+                + "  <tahunRilis>" + getTahunRilis() + "</tahunRilis>\n"
+                + "  <status>" + getStatus() + "</status>\n"
+                + "  <durasiMenit>" + durasiMenit + "</durasiMenit>\n"
+                + "  <tanggalRilis>" + tanggalRilis + "</tanggalRilis>\n"
+                + "  <distributor>" + distributor + "</distributor>\n"
+                + "</animeFilm>";
+    }
+
+    /**
+     * Override method {@code toFormattedString()} dari interface {@link Serialisable}.
+     * Mengkonversi film anime ke String terformat yang sama dengan {@link #getInfoLengkap()}.
+     *
+     * @return String data film anime dalam format terformat
+     */
+    @Override
+    public String toFormattedString() {
+        return getInfoLengkap();
+    }
+
+    /**
+     * Override method {@code fromCSV()} dari interface {@link Serialisable}.
+     * Mengonversi string CSV ke dalam objek film anime (update).
+     *
+     * @param csvString string dalam format CSV
+     * @throws IllegalArgumentException jika format CSV tidak valid
+     */
+    @Override
+    public void fromCSV(String csvString) {
+        // Parsing CSV: "judul","genre","tahunRilis","status","durasiMenit","tanggalRilis","distributor"
+        String[] parts = csvString.split("\",\"");
+        if (parts.length != 7) {
+            throw new IllegalArgumentException("Format CSV AnimeFilm tidak valid. Diharapkan 7 field.");
+        }
+
+        try {
+            // Gunakan parent method untuk basic fields
+            StringBuilder baseCsv = new StringBuilder();
+            baseCsv.append(parts[0]).append("\",\"")
+                    .append(parts[1]).append("\",\"")
+                    .append(parts[2]).append("\",\"")
+                    .append(parts[3]).append("\"");
+            super.fromCSV(baseCsv.toString());
+
+            // Parse atribut khusus AnimeFilm
+            this.durasiMenit = Integer.parseInt(parts[4].replaceAll("^\"|\"$", ""));
+            this.tanggalRilis = parts[5].replaceAll("^\"|\"$", "");
+            this.distributor = parts[6].replaceAll("^\"|\"$", "");
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Format data tidak valid: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Override method {@code fromJSON()} dari interface {@link Serialisable}.
+     * Mengonversi string JSON ke dalam objek film anime (update).
+     *
+     * @param jsonString string dalam format JSON
+     * @throws IllegalArgumentException jika format JSON tidak valid
+     */
+    @Override
+    public void fromJSON(String jsonString) {
+        try {
+            // Parse tipe dasar menggunakan parent method terlebih dahulu
+            // Extract hanya basic fields untuk parent
+            int durasiStart = jsonString.indexOf("\"durasiMenit\":");
+            String basicJson = jsonString.substring(0, durasiStart) + "}";
+            super.fromJSON(basicJson);
+
+            // Extract durasiMenit
+            int durasiFieldStart = jsonString.indexOf("\"durasiMenit\":") + 14;
+            int durasiFieldEnd = jsonString.indexOf(",", durasiFieldStart);
+            if (durasiFieldEnd == -1) {
+                durasiFieldEnd = jsonString.indexOf("}", durasiFieldStart);
+            }
+            this.durasiMenit = Integer.parseInt(jsonString.substring(durasiFieldStart, durasiFieldEnd).trim());
+
+            // Extract tanggalRilis
+            int tanggalStart = jsonString.indexOf("\"tanggalRilis\":\"") + 15;
+            int tanggalEnd = jsonString.indexOf("\"", tanggalStart);
+            this.tanggalRilis = jsonString.substring(tanggalStart, tanggalEnd);
+
+            // Extract distributor
+            int distStart = jsonString.indexOf("\"distributor\":\"") + 14;
+            int distEnd = jsonString.indexOf("\"", distStart);
+            this.distributor = jsonString.substring(distStart, distEnd);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Format JSON AnimeFilm tidak valid: " + e.getMessage());
+        }
+    }
 }

@@ -1,8 +1,13 @@
 com\pololer\spjaprak\GUI_Anime.class
+com\pololer\spjaprak\Calculable.class
 com\pololer\spjaprak\GUI_AnimeFilm$2.class
+com\pololer\spjaprak\Informasi.class
+com\pololer\spjaprak\Serialisable.class
 com\pololer\spjaprak\GUI_AnimeFilm.class
 com\pololer\spjaprak\Spjaprak.class
 com\pololer\spjaprak\GUI_Anime$1.class
+com\pololer\spjaprak\Comparable.class
+com\pololer\spjaprak\Editable.class
 com\pololer\spjaprak\Media.class
 com\pololer\spjaprak\Terminal.class
 com\pololer\spjaprak\GUI_AnimeFilm$1.class
